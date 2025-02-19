@@ -82,7 +82,7 @@ class ACCConfig(CLFCBFConfig):
             [D - self.T * v_f - 0.5 * (v_l - v_f) ** 2 / (self.cd * self.gravity)]
         )
 
-    def V_1(self, z: ArrayLike) -> float:
+    def V_1(self, z: ArrayLike, z_des: ArrayLike) -> float:
         # CLF: Squared error between the follower velocity and the desired velocity
         return jnp.array([(z[0] - self.v_des) ** 2])
 

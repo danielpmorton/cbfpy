@@ -110,8 +110,8 @@ class CLFCBFConfig(CBFConfig):
 
         # Check on CLF dimension
         z_test = jnp.ones(self.n)
-        v1_test = self.V_1(jnp.ones(self.n))
-        v2_test = self.V_2(jnp.ones(self.n))
+        v1_test = self.V_1(z_test, z_test)
+        v2_test = self.V_2(z_test, z_test)
         if v1_test.ndim != 1 or v2_test.ndim != 1:
             raise ValueError("CLF(s) must output 1D arrays")
         self.num_rd1_clf = v1_test.shape[0]
@@ -146,7 +146,7 @@ class CLFCBFConfig(CBFConfig):
             raise ValueError("H(z) must be symmetric positive semi-definite")
         # TODO: add a warning if the CLF relaxation penalty > the QP relaxation penalty?
 
-    def V_1(self, z: ArrayLike) -> Array:
+    def V_1(self, z: ArrayLike, z_des: ArrayLike) -> Array:
         """Relative-Degree-1 Control Lyapunov Function (CLF)
 
         A CLF is a positive-definite function which evaluates to zero at the equilibrium point, and is
@@ -161,6 +161,7 @@ class CLFCBFConfig(CBFConfig):
 
         Args:
             z (ArrayLike): State, shape (n,)
+            z_des (ArrayLike): Desired state, shape (n,)
 
         Returns:
             Array: V(z): The RD1 CLF evaluation, shape (num_rd1_clf,)
@@ -168,7 +169,7 @@ class CLFCBFConfig(CBFConfig):
         return jnp.array([])
 
     # TODO: Check if the math behind this is actually valid
-    def V_2(self, z: ArrayLike) -> Array:
+    def V_2(self, z: ArrayLike, z_des: ArrayLike) -> Array:
         """Relative-Degree-2 (high-order) Control Lyapunov Function (CLF)
 
         A CLF is a positive-definite function which evaluates to zero at the equilibrium point, and is
@@ -184,6 +185,7 @@ class CLFCBFConfig(CBFConfig):
 
         Args:
             z (ArrayLike): State, shape (n,)
+            z_des (ArrayLike): Desired state, shape (n,)
 
         Returns:
             Array: V(z): The RD2 CLF evaluation, shape (num_rd2_clf,)

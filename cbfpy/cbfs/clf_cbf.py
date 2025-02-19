@@ -189,7 +189,7 @@ class CLFCBF:
                 "Cannot test Lgh; missing additional arguments.\n"
                 + "Please provide an initial seed for these args in the config's init_args input"
             )
-        test_lgv = self.LgV(test_z)
+        test_lgv = self.LgV(test_z, test_z)
         if jnp.allclose(test_lgv, 0):
             print_warning(
                 "LgV is zero. Consider increasing the relative degree or modifying the Lyapunov function."
@@ -300,49 +300,62 @@ class CLFCBF:
 
     ## CLF functions ##
 
-    def V(self, z: ArrayLike) -> Array:
+    def V(self, z: ArrayLike, z_des: ArrayLike) -> Array:
         """Control Lyapunov Function(s)
 
         Args:
             z (ArrayLike): State, shape (n,)
+            z_des (ArrayLike): Desired state, shape (n,)
 
         Returns:
             Array: CLF evaluation, shape (num_clf,)
         """
+        def _V_2(state):
+            return self.V_2(state, z_des)
+
         # Take any relative-degree-2 CLFs and convert them to relative-degree-1
         # NOTE: If adding args to the CLF, create a wrapper func like with the barrier function
-        V_2, dV_2_dt = jax.jvp(self.V_2, (z,), (self.f(z),))
+        V_2, dV_2_dt = jax.jvp(_V_2, (z,), (self.f(z),))
         V2_rd1 = dV_2_dt + self.gamma_2(V_2)
 
         # Merge the relative-degree-1 and relative-degree-2 CLFs
-        return jnp.concatenate([self.V_1(z), V2_rd1])
+        return jnp.concatenate([self.V_1(z, z_des), V2_rd1])
 
-    def V_and_LfV(self, z: ArrayLike) -> Tuple[Array, Array]:
+    def V_and_LfV(self, z: ArrayLike, z_des: ArrayLike) -> Tuple[Array, Array]:
         """Lie derivative of the CLF wrt the autonomous dynamics `f(z)`
 
         The evaluation of the CLF is also returned "for free", a byproduct of the jacobian-vector-product
 
         Args:
             z (ArrayLike): State, shape (n,)
+            z_des (ArrayLike): Desired state, shape (n,)
 
         Returns:
             V (Array): CLF evaluation, shape (1,)
             LfV (Array): Lie derivative of `V` w.r.t. `f`, shape (1,)
         """
-        return jax.jvp(self.V, (z,), (self.f(z),))
 
-    def LgV(self, z: ArrayLike) -> Array:
+        def _V(state):
+            return self.V(state, z_des)
+
+        return jax.jvp(_V, (z,), (self.f(z),))
+
+    def LgV(self, z: ArrayLike, z_des: ArrayLike) -> Array:
         """Lie derivative of the CLF wrt the control dynamics `g(z)u`
 
         Args:
             z (ArrayLike): State, shape (n,)
+            z_des (ArrayLike): Desired state, shape (n,)
 
         Returns:
             Array: LgV, shape (m,)
         """
 
+        def _V(state):
+            return self.V(state, z_des)
+
         def _jvp(g_column):
-            return jax.jvp(self.V, (z,), (g_column,))[1]
+            return jax.jvp(_V, (z,), (g_column,))[1]
 
         return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z))
 
@@ -401,7 +414,7 @@ class CLFCBF:
         """
         G = jnp.block(
             [
-                [self.LgV(z), -1.0 * jnp.ones((self.num_clf, 1))],
+                [self.LgV(z, z_des), -1.0 * jnp.ones((self.num_clf, 1))],
                 [-self.Lgh(z, *h_args), jnp.zeros((self.num_cbf, 1))],
             ]
         )
@@ -433,7 +446,7 @@ class CLFCBF:
             Array: h vector, shape (num_constraints,)
         """
         hz, lfh = self.h_and_Lfh(z, *h_args)
-        vz, lfv = self.V_and_LfV(z)
+        vz, lfv = self.V_and_LfV(z, z_des)
         h = jnp.concatenate(
             [
                 -lfv - self.gamma(vz),
