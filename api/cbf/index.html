@@ -1,0 +1,4295 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Control Barrier Functions in Python">
+      
+      
+      
+        <link rel="canonical" href="https://danielpmorton.github.io/cbfpy/api/cbf/">
+      
+      
+        <link rel="prev" href="../clf_cbf_config/">
+      
+      
+        <link rel="next" href="../clf_cbf/">
+      
+      
+      <link rel="icon" href="../../favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>CBF - CBFpy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="lime">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cbfpy.cbfs.cbf" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CBFpy" class="md-header__button md-logo" aria-label="CBFpy" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CBFpy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CBF
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/danielpmorton/cbfpy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    danielpmorton/cbfpy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CBFpy" class="md-nav__button md-logo" aria-label="CBFpy" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    CBFpy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/danielpmorton/cbfpy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    danielpmorton/cbfpy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pyenv/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Highlights
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            API Highlights
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    CBF
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    CBF
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf" class="md-nav__link">
+    <span class="md-ellipsis">
+      cbf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf--control-barrier-functions-cbfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control Barrier Functions (CBFs)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF" class="md-nav__link">
+    <span class="md-ellipsis">
+      CBF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CBF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.from_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF._validate_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      _validate_instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.safety_filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      safety_filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h" class="md-nav__link">
+    <span class="md-ellipsis">
+      h
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h_and_Lfh" class="md-nav__link">
+    <span class="md-ellipsis">
+      h_and_Lfh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.Lgh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lgh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.P_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      P_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.q_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      q_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.G_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      G_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      h_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.qp_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      qp_data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clf_cbf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLF-CBF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cbf_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CBF Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clf_cbf_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLF-CBF Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CBFs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            CBFs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    CBF
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    CBF
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf" class="md-nav__link">
+    <span class="md-ellipsis">
+      cbf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf--control-barrier-functions-cbfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control Barrier Functions (CBFs)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF" class="md-nav__link">
+    <span class="md-ellipsis">
+      CBF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CBF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.from_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF._validate_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      _validate_instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.safety_filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      safety_filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h" class="md-nav__link">
+    <span class="md-ellipsis">
+      h
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h_and_Lfh" class="md-nav__link">
+    <span class="md-ellipsis">
+      h_and_Lfh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.Lgh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lgh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.P_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      P_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.q_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      q_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.G_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      G_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      h_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.qp_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      qp_data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clf_cbf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLF-CBF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cbf_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CBF Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clf_cbf_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLF-CBF Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Environments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Environments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base_env/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Base Env
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../car_env/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cruise Control Env
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../point_robot_envs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Point Robot Envs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drone_env/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Drone Env
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arm_envs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manipulator Envs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../acc_demo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adaptive Cruise Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../point_robot_demo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Point Robot: Safe Set
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../point_robot_obstacle_demo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Point Robot: Obstacle Avoidance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drone_demo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Drone Obstacle Avoidance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../joint_limits_demo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manipulator Joint Limits
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf" class="md-nav__link">
+    <span class="md-ellipsis">
+      cbf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf--control-barrier-functions-cbfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control Barrier Functions (CBFs)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF" class="md-nav__link">
+    <span class="md-ellipsis">
+      CBF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CBF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.from_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF._validate_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      _validate_instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.safety_filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      safety_filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h" class="md-nav__link">
+    <span class="md-ellipsis">
+      h
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h_and_Lfh" class="md-nav__link">
+    <span class="md-ellipsis">
+      h_and_Lfh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.Lgh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lgh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.P_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      P_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.q_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      q_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.G_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      G_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.h_qp" class="md-nav__link">
+    <span class="md-ellipsis">
+      h_qp
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cbfpy.cbfs.cbf.CBF.qp_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      qp_data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/danielpmorton/cbfpy/edit/master/docs/api/cbf.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/danielpmorton/cbfpy/raw/master/docs/api/cbf.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+  <h1>CBF</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="cbfpy.cbfs.cbf"></a>
+    <div class="doc doc-contents first">
+
+        <h2 id="cbfpy.cbfs.cbf--control-barrier-functions-cbfs">Control Barrier Functions (CBFs)</h2>
+<p>CBFs serve as safety filters on top of a nominal controller. Given a nominal control input, the CBF will compute a
+safe control input to keep the system within a safe set.</p>
+<p>For a relative-degree-1 system, this optimizes the standard min-norm objective with the constraint
+<code>h_dot &gt;= -alpha(h(z))</code>
+<div class="highlight"><pre><span></span><code>minimize ||u - u_des||_{2}^{2}               # CBF Objective (Example)
+subject to Lfh(z) + Lgh(z)u &gt;= -alpha(h(z))  # RD1 CBF Constraint
+</code></pre></div></p>
+<p>In the case of a relative-degree-2 system, this differs slightly to enforce the RD2 constraint
+<code>h_2_dot &gt;= -alpha_2(h_2(z))</code>
+<div class="highlight"><pre><span></span><code>minimize ||u - u_des||_{2}^{2}                       # CBF Objective (Example)
+subject to Lfh_2(z) + Lgh_2(z)u &gt;= -alpha_2(h_2(z))  # RD2 CBF Constraint
+</code></pre></div></p>
+<p>If there are constraints on the control input, we also enforce another constraint:
+<div class="highlight"><pre><span></span><code>u_min &lt;= u &lt;= u_max  # Control constraint
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cbfpy.cbfs.cbf.CBF" class="doc doc-heading">
+            <code>CBF</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Control Barrier Function (CBF) class.</p>
+<p>The main constructor for this class is via the <code>from_config</code> method, which constructs a CBF instance
+based on the provided CBFConfig configuration object.</p>
+<p>You can then use the CBF's <code>safety_filter</code> method to compute the control input that satisfies the CBF</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code># Construct a CBFConfig for your problem
+config = DroneConfig()
+# Construct a CBF instance based on the config
+cbf = CBF.from_config(config)
+# Compute the safe control input
+safe_control = cbf.safety_filter(current_state, nominal_control)
+</code></pre></div>
+
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@jax</span><span class="o">.</span><span class="n">tree_util</span><span class="o">.</span><span class="n">register_static</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CBF</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Control Barrier Function (CBF) class.</span>
+
+<span class="sd">    The main constructor for this class is via the `from_config` method, which constructs a CBF instance</span>
+<span class="sd">    based on the provided CBFConfig configuration object.</span>
+
+<span class="sd">    You can then use the CBF&#39;s `safety_filter` method to compute the control input that satisfies the CBF</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        ```</span>
+<span class="sd">        # Construct a CBFConfig for your problem</span>
+<span class="sd">        config = DroneConfig()</span>
+<span class="sd">        # Construct a CBF instance based on the config</span>
+<span class="sd">        cbf = CBF.from_config(config)</span>
+<span class="sd">        # Compute the safe control input</span>
+<span class="sd">        safe_control = cbf.safety_filter(current_state, nominal_control)</span>
+<span class="sd">        ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># NOTE: The __init__ method is not used to construct a CBF instance. Instead, use the `from_config` method.</span>
+    <span class="c1"># This is because Jax prefers for the __init__ method to not contain any input validation, so we do this</span>
+    <span class="c1"># in the CBFConfig class instead.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_cbf</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">u_min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span>
+        <span class="n">u_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span>
+        <span class="n">control_constrained</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">relax_cbf</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">cbf_relaxation_penalty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">h_1</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">h_2</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">alpha</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">alpha_2</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">P</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">q</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span> <span class="n">Array</span><span class="p">],</span>
+        <span class="n">solver_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_cbf</span> <span class="o">=</span> <span class="n">num_cbf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_min</span> <span class="o">=</span> <span class="n">u_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_max</span> <span class="o">=</span> <span class="n">u_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_constrained</span> <span class="o">=</span> <span class="n">control_constrained</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relax_cbf</span> <span class="o">=</span> <span class="n">relax_cbf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cbf_relaxation_penalty</span> <span class="o">=</span> <span class="n">cbf_relaxation_penalty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_1</span> <span class="o">=</span> <span class="n">h_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_2</span> <span class="o">=</span> <span class="n">h_2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha_2</span> <span class="o">=</span> <span class="n">alpha_2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_config</span> <span class="o">=</span> <span class="n">P</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_config</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_tol</span> <span class="o">=</span> <span class="n">solver_tol</span>
+        <span class="k">if</span> <span class="n">relax_cbf</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qp_solver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">qpax</span><span class="o">.</span><span class="n">solve_qp_elastic</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qp_solver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">qpax</span><span class="o">.</span><span class="n">solve_qp</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CBFConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CBF&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a CBF based on the provided configuration</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config (CBFConfig): Config object for the CBF. Contains info on the system dynamics, barrier function, etc.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            CBF: Control Barrier Function instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">num_cbf</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">u_min</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">u_max</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">control_constrained</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">relax_cbf</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">cbf_relaxation_penalty</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">h_1</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">h_2</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">f</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">g</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">alpha_2</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">P</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">q</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">solver_tol</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_validate_instance</span><span class="p">(</span><span class="o">*</span><span class="n">config</span><span class="o">.</span><span class="n">init_args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks that the CBF is valid; warns the user if not</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># TODO: Decide if this should be checked on a row-by-row basis or via the full matrix</span>
+            <span class="n">test_lgh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lgh</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">test_lgh</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">print_warning</span><span class="p">(</span>
+                    <span class="s2">&quot;Lgh is zero. Consider increasing the relative degree or modifying the barrier function.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">print_warning</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot test Lgh; missing additional arguments.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;Please provide an initial seed for these args in the config&#39;s init_args input&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@conditional_jit</span><span class="p">(</span><span class="ow">not</span> <span class="n">DEBUG_SAFETY_FILTER</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">safety_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the CBF safety filter to a nominal control</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (Array): State, shape (n,)</span>
+<span class="sd">            u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: Safe control input, shape (m,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qp_data</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relax_cbf</span><span class="p">:</span>
+            <span class="n">x_qp</span><span class="p">,</span> <span class="n">t_qp</span><span class="p">,</span> <span class="n">s1_qp</span><span class="p">,</span> <span class="n">s2_qp</span><span class="p">,</span> <span class="n">z1_qp</span><span class="p">,</span> <span class="n">z2_qp</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qp_solver</span><span class="p">(</span>
+                <span class="n">P</span><span class="p">,</span>
+                <span class="n">q</span><span class="p">,</span>
+                <span class="n">G</span><span class="p">,</span>
+                <span class="n">h</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cbf_relaxation_penalty</span><span class="p">,</span>
+                <span class="n">solver_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solver_tol</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_qp</span><span class="p">,</span> <span class="n">s_qp</span><span class="p">,</span> <span class="n">z_qp</span><span class="p">,</span> <span class="n">y_qp</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qp_solver</span><span class="p">(</span>
+                <span class="n">P</span><span class="p">,</span>
+                <span class="n">q</span><span class="p">,</span>
+                <span class="n">A</span><span class="p">,</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">G</span><span class="p">,</span>
+                <span class="n">h</span><span class="p">,</span>
+                <span class="n">solver_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solver_tol</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">DEBUG_SAFETY_FILTER</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Converged&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">converged</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;Did not converge&#39;</span><span class="si">}</span><span class="s2">. Iterations: </span><span class="si">{</span><span class="n">iters</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">x_qp</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">h</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Barrier function(s)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (ArrayLike): State, shape (n,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: Barrier function evaluation, shape (num_barr,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Take any relative-degree-2 barrier functions and convert them to relative-degree-1</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_h_2</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_2</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+        <span class="n">h_2</span><span class="p">,</span> <span class="n">dh_2_dt</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">_h_2</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="p">,),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">),))</span>
+        <span class="n">h_2_as_rd1</span> <span class="o">=</span> <span class="n">dh_2_dt</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_2</span><span class="p">(</span><span class="n">h_2</span><span class="p">)</span>
+
+        <span class="c1"># Merge the relative-degree-1 and relative-degree-2 barrier functions</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">h_1</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span> <span class="n">h_2_as_rd1</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">h_and_Lfh</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lie derivative of the barrier function(s) wrt the autonomous dynamics `f(z)`</span>
+
+<span class="sd">        The evaluation of the barrier function is also returned &quot;for free&quot;, a byproduct of the jacobian-vector-product</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (ArrayLike): State, shape (n,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            h (Array): Barrier function evaluation, shape (num_barr,)</span>
+<span class="sd">            Lfh (Array): Lie derivative of `h` w.r.t. `f`, shape (num_barr,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Note: the below code is just a more efficient way of stating `Lfh = jax.jacobian(self.h)(z) @ self.f(z)`</span>
+        <span class="c1"># with the bonus benefit of also evaluating the barrier function</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_h</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="p">,),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">),))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">Lgh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lie derivative of the barrier function(s) wrt the control dynamics `g(z)u`</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (ArrayLike): State, shape (n,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: Lgh, shape (num_barr, m)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Note: the below code is just a more efficient way of stating `Lgh = jax.jacobian(self.h)(z) @ self.g(z)`</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_h</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_jvp</span><span class="p">(</span><span class="n">g_column</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="p">,),</span> <span class="p">(</span><span class="n">g_column</span><span class="p">,))[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_jvp</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+
+    <span class="c1">## QP Matrices ##</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">P_qp</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Quadratic term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (Array): State, shape (n,)</span>
+<span class="sd">            u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: P matrix, shape (m, m)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This is user-modifiable in the config, but defaults to 2 * I for the standard min-norm CBF objective</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_config</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">q_qp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Linear term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (Array): State, shape (n,)</span>
+<span class="sd">            u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: q vector, shape (m,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This is user-modifiable in the config, but defaults to -2 * u_des for the standard min-norm CBF objective</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_config</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">G_qp</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inequality constraint matrix for the QP (`Gx &lt;= h`)</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            The number of constraints depends on if we have control constraints or not.</span>
+<span class="sd">                Without control constraints, `num_constraints == num_barriers`.</span>
+<span class="sd">                With control constraints, `num_constraints == num_barriers + 2*m`</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (Array): State, shape (n,)</span>
+<span class="sd">            u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: G matrix, shape (num_constraints, m)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Lgh</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_constrained</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">G</span><span class="p">],</span> <span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)],</span> <span class="p">[</span><span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">G</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">h_qp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Upper bound on constraints for the QP (`Gx &lt;= h`)</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            The number of constraints depends on if we have control constraints or not.</span>
+<span class="sd">                Without control constraints, `num_constraints == num_barriers`.</span>
+<span class="sd">                With control constraints, `num_constraints == num_barriers + 2*m`</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (Array): State, shape (n,)</span>
+<span class="sd">            u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: h vector, shape (num_constraints,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hz</span><span class="p">,</span> <span class="n">lfh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_and_Lfh</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">(</span><span class="n">hz</span><span class="p">)</span> <span class="o">+</span> <span class="n">lfh</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_constrained</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">h</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_max</span><span class="p">),</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_min</span><span class="p">)]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">h</span>
+
+    <span class="nd">@conditional_jit</span><span class="p">(</span><span class="ow">not</span> <span class="n">DEBUG_QP_DATA</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">qp_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs the QP matrices based on the current state and desired control</span>
+
+<span class="sd">        i.e. the matrices/vectors (P, q, A, b, G, h) for the optimization problem:</span>
+
+<span class="sd">        ```</span>
+<span class="sd">        minimize 0.5 * x^T P x + q^T x</span>
+<span class="sd">        subject to  A x == b</span>
+<span class="sd">                    G x &lt;= h</span>
+<span class="sd">        ```</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            - CBFs do not rely on equality constraints, so `A` and `b` are empty.</span>
+<span class="sd">            - The number of constraints depends on if we have control constraints or not.</span>
+<span class="sd">                Without control constraints, `num_constraints == num_barriers`.</span>
+<span class="sd">                With control constraints, `num_constraints == num_barriers + 2*m`</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (Array): State, shape (n,)</span>
+<span class="sd">            u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">            *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            P (Array): Quadratic term in the QP objective, shape (m, m)</span>
+<span class="sd">            q (Array): Linear term in the QP objective, shape (m,)</span>
+<span class="sd">            A (Array): Equality constraint matrix, shape (0, m)</span>
+<span class="sd">            b (Array): Equality constraint vector, shape (0,)</span>
+<span class="sd">            G (Array): Inequality constraint matrix, shape (num_constraints, m)</span>
+<span class="sd">            h (Array): Upper bound on constraints, shape (num_constraints,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">P_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span>  <span class="c1"># Equality matrix (not used for CBF)</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>  <span class="c1"># Equality vector (not used for CBF)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">G_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.from_config" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Construct a CBF based on the provided configuration</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>config</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;CBFConfig&lt;/code&gt; (&lt;code&gt;cbfpy.config.cbf_config.CBFConfig&lt;/code&gt;)" href="../cbf_config/#cbfpy.config.cbf_config.CBFConfig">CBFConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Config object for the CBF. Contains info on the system dynamics, barrier function, etc.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>CBF</code></td>            <td>
+                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;CBF&lt;/code&gt; (&lt;code&gt;cbfpy.cbfs.cbf.CBF&lt;/code&gt;)" href="#cbfpy.cbfs.cbf.CBF">CBF</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Control Barrier Function instance</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CBFConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CBF&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a CBF based on the provided configuration</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (CBFConfig): Config object for the CBF. Contains info on the system dynamics, barrier function, etc.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        CBF: Control Barrier Function instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">num_cbf</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">u_min</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">u_max</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">control_constrained</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">relax_cbf</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">cbf_relaxation_penalty</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">h_1</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">h_2</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">f</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">g</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">alpha_2</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">P</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">q</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">solver_tol</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">instance</span><span class="o">.</span><span class="n">_validate_instance</span><span class="p">(</span><span class="o">*</span><span class="n">config</span><span class="o">.</span><span class="n">init_args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">instance</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF._validate_instance" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_validate_instance</span><span class="p">(</span><span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks that the CBF is valid; warns the user if not</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_validate_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that the CBF is valid; warns the user if not</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># TODO: Decide if this should be checked on a row-by-row basis or via the full matrix</span>
+        <span class="n">test_lgh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lgh</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">test_lgh</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">print_warning</span><span class="p">(</span>
+                <span class="s2">&quot;Lgh is zero. Consider increasing the relative degree or modifying the barrier function.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">print_warning</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot test Lgh; missing additional arguments.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;Please provide an initial seed for these args in the config&#39;s init_args input&quot;</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.safety_filter" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">safety_filter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Apply the CBF safety filter to a nominal control</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>u_des</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Desired control input, shape (m,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Safe control input, shape (m,)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@conditional_jit</span><span class="p">(</span><span class="ow">not</span> <span class="n">DEBUG_SAFETY_FILTER</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">safety_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply the CBF safety filter to a nominal control</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (Array): State, shape (n,)</span>
+<span class="sd">        u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: Safe control input, shape (m,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qp_data</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relax_cbf</span><span class="p">:</span>
+        <span class="n">x_qp</span><span class="p">,</span> <span class="n">t_qp</span><span class="p">,</span> <span class="n">s1_qp</span><span class="p">,</span> <span class="n">s2_qp</span><span class="p">,</span> <span class="n">z1_qp</span><span class="p">,</span> <span class="n">z2_qp</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qp_solver</span><span class="p">(</span>
+            <span class="n">P</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">,</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">h</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cbf_relaxation_penalty</span><span class="p">,</span>
+            <span class="n">solver_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solver_tol</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_qp</span><span class="p">,</span> <span class="n">s_qp</span><span class="p">,</span> <span class="n">z_qp</span><span class="p">,</span> <span class="n">y_qp</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qp_solver</span><span class="p">(</span>
+            <span class="n">P</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">,</span>
+            <span class="n">A</span><span class="p">,</span>
+            <span class="n">b</span><span class="p">,</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">h</span><span class="p">,</span>
+            <span class="n">solver_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solver_tol</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">DEBUG_SAFETY_FILTER</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Converged&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">converged</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;Did not converge&#39;</span><span class="si">}</span><span class="s2">. Iterations: </span><span class="si">{</span><span class="n">iters</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">x_qp</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.h" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">h</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Barrier function(s)</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Barrier function evaluation, shape (num_barr,)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">h</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Barrier function(s)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (ArrayLike): State, shape (n,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: Barrier function evaluation, shape (num_barr,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Take any relative-degree-2 barrier functions and convert them to relative-degree-1</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_h_2</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_2</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+    <span class="n">h_2</span><span class="p">,</span> <span class="n">dh_2_dt</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">_h_2</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="p">,),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">),))</span>
+    <span class="n">h_2_as_rd1</span> <span class="o">=</span> <span class="n">dh_2_dt</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_2</span><span class="p">(</span><span class="n">h_2</span><span class="p">)</span>
+
+    <span class="c1"># Merge the relative-degree-1 and relative-degree-2 barrier functions</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">h_1</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span> <span class="n">h_2_as_rd1</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.h_and_Lfh" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">h_and_Lfh</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Lie derivative of the barrier function(s) wrt the autonomous dynamics <code>f(z)</code></p>
+<p>The evaluation of the barrier function is also returned "for free", a byproduct of the jacobian-vector-product</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>h</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Barrier function evaluation, shape (num_barr,)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>Lfh</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Lie derivative of <code>h</code> w.r.t. <code>f</code>, shape (num_barr,)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">h_and_Lfh</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lie derivative of the barrier function(s) wrt the autonomous dynamics `f(z)`</span>
+
+<span class="sd">    The evaluation of the barrier function is also returned &quot;for free&quot;, a byproduct of the jacobian-vector-product</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (ArrayLike): State, shape (n,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        h (Array): Barrier function evaluation, shape (num_barr,)</span>
+<span class="sd">        Lfh (Array): Lie derivative of `h` w.r.t. `f`, shape (num_barr,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Note: the below code is just a more efficient way of stating `Lfh = jax.jacobian(self.h)(z) @ self.f(z)`</span>
+    <span class="c1"># with the bonus benefit of also evaluating the barrier function</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_h</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="p">,),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">),))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.Lgh" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">Lgh</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Lie derivative of the barrier function(s) wrt the control dynamics <code>g(z)u</code></p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Lgh, shape (num_barr, m)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">Lgh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lie derivative of the barrier function(s) wrt the control dynamics `g(z)u`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (ArrayLike): State, shape (n,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: Lgh, shape (num_barr, m)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Note: the below code is just a more efficient way of stating `Lgh = jax.jacobian(self.h)(z) @ self.g(z)`</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_h</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_jvp</span><span class="p">(</span><span class="n">g_column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="p">,),</span> <span class="p">(</span><span class="n">g_column</span><span class="p">,))[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_jvp</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.P_qp" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">P_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Quadratic term in the QP objective (<code>minimize 0.5 * x^T P x + q^T x</code>)</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>u_des</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Desired control input, shape (m,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>P matrix, shape (m, m)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">P_qp</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quadratic term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (Array): State, shape (n,)</span>
+<span class="sd">        u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: P matrix, shape (m, m)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># This is user-modifiable in the config, but defaults to 2 * I for the standard min-norm CBF objective</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_config</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.q_qp" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">q_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Linear term in the QP objective (<code>minimize 0.5 * x^T P x + q^T x</code>)</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>u_des</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Desired control input, shape (m,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>q vector, shape (m,)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">q_qp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (Array): State, shape (n,)</span>
+<span class="sd">        u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: q vector, shape (m,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># This is user-modifiable in the config, but defaults to -2 * u_des for the standard min-norm CBF objective</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_config</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.G_qp" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">G_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Inequality constraint matrix for the QP (<code>Gx &lt;= h</code>)</p>
+
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>The number of constraints depends on if we have control constraints or not.
+    Without control constraints, <code>num_constraints == num_barriers</code>.
+    With control constraints, <code>num_constraints == num_barriers + 2*m</code></p>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>u_des</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Desired control input, shape (m,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>G matrix, shape (num_constraints, m)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">G_qp</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inequality constraint matrix for the QP (`Gx &lt;= h`)</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The number of constraints depends on if we have control constraints or not.</span>
+<span class="sd">            Without control constraints, `num_constraints == num_barriers`.</span>
+<span class="sd">            With control constraints, `num_constraints == num_barriers + 2*m`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (Array): State, shape (n,)</span>
+<span class="sd">        u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: G matrix, shape (num_constraints, m)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Lgh</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_constrained</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">G</span><span class="p">],</span> <span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)],</span> <span class="p">[</span><span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">G</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.h_qp" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">h_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Upper bound on constraints for the QP (<code>Gx &lt;= h</code>)</p>
+
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>The number of constraints depends on if we have control constraints or not.
+    Without control constraints, <code>num_constraints == num_barriers</code>.
+    With control constraints, <code>num_constraints == num_barriers + 2*m</code></p>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>u_des</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Desired control input, shape (m,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Array</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>h vector, shape (num_constraints,)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">h_qp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Upper bound on constraints for the QP (`Gx &lt;= h`)</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The number of constraints depends on if we have control constraints or not.</span>
+<span class="sd">            Without control constraints, `num_constraints == num_barriers`.</span>
+<span class="sd">            With control constraints, `num_constraints == num_barriers + 2*m`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (Array): State, shape (n,)</span>
+<span class="sd">        u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array: h vector, shape (num_constraints,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hz</span><span class="p">,</span> <span class="n">lfh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_and_Lfh</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">(</span><span class="n">hz</span><span class="p">)</span> <span class="o">+</span> <span class="n">lfh</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_constrained</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">h</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_max</span><span class="p">),</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_min</span><span class="p">)]</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">h</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cbfpy.cbfs.cbf.CBF.qp_data" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">qp_data</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Constructs the QP matrices based on the current state and desired control</p>
+<p>i.e. the matrices/vectors (P, q, A, b, G, h) for the optimization problem:</p>
+<div class="highlight"><pre><span></span><code>minimize 0.5 * x^T P x + q^T x
+subject to  A x == b
+            G x &lt;= h
+</code></pre></div>
+
+
+<details class="note" open>
+  <summary>Note</summary>
+  <ul>
+<li>CBFs do not rely on equality constraints, so <code>A</code> and <code>b</code> are empty.</li>
+<li>The number of constraints depends on if we have control constraints or not.
+    Without control constraints, <code>num_constraints == num_barriers</code>.
+    With control constraints, <code>num_constraints == num_barriers + 2*m</code></li>
+</ul>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>z</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>State, shape (n,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>u_des</code>
+            </td>
+            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Desired control input, shape (m,)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*h_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional additional arguments for the barrier function.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>P</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Quadratic term in the QP objective, shape (m, m)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>q</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Linear term in the QP objective, shape (m,)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>A</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Equality constraint matrix, shape (0, m)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>b</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Equality constraint vector, shape (0,)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>G</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Inequality constraint matrix, shape (num_constraints, m)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>h</code></td>            <td>
+                  <code><span title="jax.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Upper bound on constraints, shape (num_constraints,)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>cbfpy/cbfs/cbf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@conditional_jit</span><span class="p">(</span><span class="ow">not</span> <span class="n">DEBUG_QP_DATA</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">qp_data</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="n">u_des</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Constructs the QP matrices based on the current state and desired control</span>
+
+<span class="sd">    i.e. the matrices/vectors (P, q, A, b, G, h) for the optimization problem:</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    minimize 0.5 * x^T P x + q^T x</span>
+<span class="sd">    subject to  A x == b</span>
+<span class="sd">                G x &lt;= h</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        - CBFs do not rely on equality constraints, so `A` and `b` are empty.</span>
+<span class="sd">        - The number of constraints depends on if we have control constraints or not.</span>
+<span class="sd">            Without control constraints, `num_constraints == num_barriers`.</span>
+<span class="sd">            With control constraints, `num_constraints == num_barriers + 2*m`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z (Array): State, shape (n,)</span>
+<span class="sd">        u_des (Array): Desired control input, shape (m,)</span>
+<span class="sd">        *h_args: Optional additional arguments for the barrier function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        P (Array): Quadratic term in the QP objective, shape (m, m)</span>
+<span class="sd">        q (Array): Linear term in the QP objective, shape (m,)</span>
+<span class="sd">        A (Array): Equality constraint matrix, shape (0, m)</span>
+<span class="sd">        b (Array): Equality constraint vector, shape (0,)</span>
+<span class="sd">        G (Array): Inequality constraint matrix, shape (num_constraints, m)</span>
+<span class="sd">        h (Array): Upper bound on constraints, shape (num_constraints,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span>  <span class="c1"># Equality matrix (not used for CBF)</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>  <span class="c1"># Equality vector (not used for CBF)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">G_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_qp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u_des</span><span class="p">,</span> <span class="o">*</span><span class="n">h_args</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../clf_cbf_config/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CLF-CBF Config">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                CLF-CBF Config
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../clf_cbf/" class="md-footer__link md-footer__link--next" aria-label="Next: CLF-CBF">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                CLF-CBF
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

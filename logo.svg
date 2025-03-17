@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   fill="#000000"
+   width="32"
+   height="24"
+   viewBox="0 0 1.2799999 0.96000002"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="cbfpy_white.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs10">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5532">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.04;stroke-opacity:1"
+         id="rect5534"
+         width="11.029737"
+         height="9.2851562"
+         x="11.211775"
+         y="-17.053169"
+         ry="0" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998-5">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000-3"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998-5-6">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000-3-2"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998-5-1">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000-3-27"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998-5-9">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000-3-3"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998-5-0">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000-3-6"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8998-5-61">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.0110099;stroke-opacity:1"
+         id="rect9000-3-8"
+         width="17.137194"
+         height="2.5503449"
+         x="32.542343"
+         y="-4.5333176" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="namedview8"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     showgrid="false"
+     inkscape:zoom="29.642695"
+     inkscape:cx="21.269996"
+     inkscape:cy="9.6988481"
+     inkscape:window-width="2490"
+     inkscape:window-height="1376"
+     inkscape:window-x="70"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g12317"
+     units="px"
+     width="24px" />
+  <title
+     id="title2">robot-arm</title>
+  <g
+     id="g12317"
+     transform="translate(0.00814438,0.0017755)">
+    <g
+       id="g13083"
+       transform="matrix(1.0036608,0,0,1.0036608,-0.00226292,-0.00194438)"
+       style="fill:#ffffff;stroke:none">
+      <path
+         id="path2879"
+         style="fill:#ffffff;stroke:none;stroke-width:0.024581"
+         d="m 16.939453,1.6796875 a 2.0983312,2.0983312 0 0 0 -0.949219,0.2363281 2.0983312,2.0983312 0 0 0 -0.01172,0.00586 L 4.2363281,6.7441406 A 3.0169499,3.0169499 0 0 0 3.875,6.9023438 3.0169499,3.0169499 0 0 0 2.5898438,10.970703 3.0169499,3.0169499 0 0 0 6.65625,12.257812 3.0169499,3.0169499 0 0 0 6.9296875,12.097656 l 0.00977,0.01953 L 17.755859,5.71875 A 2.0983312,2.0983312 0 0 0 17.923828,5.640625 2.0983312,2.0983312 0 0 0 18.818359,2.8105469 2.0983312,2.0983312 0 0 0 16.939453,1.6796875 Z m -0.06055,0.6835937 A 1.4232588,1.4232588 0 0 1 18.302734,3.7871094 1.4232588,1.4232588 0 0 1 16.878906,5.2109375 1.4232588,1.4232588 0 0 1 15.455078,3.7871094 1.4232588,1.4232588 0 0 1 16.878906,2.3632812 Z M 5.3242188,7.5957031 a 1.9446672,1.9446672 0 0 1 0.060547,0 A 1.9446672,1.9446672 0 0 1 7.328125,9.5390625 1.9446672,1.9446672 0 0 1 5.3847656,11.484375 1.9446672,1.9446672 0 0 1 3.4394531,9.5390625 1.9446672,1.9446672 0 0 1 5.3242188,7.5957031 Z"
+         transform="matrix(0.04521619,0,0,0.04521619,-0.09160342,-0.07571556)" />
+      <path
+         style="fill:#ffffff;stroke:none;stroke-width:0.00111146px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 0.13616205,0.46829842 0.30447277,0.91097202 0.50197687,0.85399241 0.2481207,0.42316501 Z"
+         id="path3476"
+         sodipodi:nodetypes="ccccc" />
+      <circle
+         style="fill:#ffffff;stroke:none;stroke-width:0.04;stroke-opacity:1"
+         id="path3580"
+         cx="16.605833"
+         cy="-7.794867"
+         r="5.2829866"
+         clip-path="url(#clipPath5532)"
+         transform="matrix(0.03003804,0,0,0.03003804,-0.07897743,1.1900026)" />
+      <path
+         style="fill:#ffffff;stroke:none;stroke-width:0.00111146px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 0.68557428,0.17078928 0.11499921,0.20387751 0.0683276,-0.009499 -0.125526,-0.22833794 z"
+         id="path3476-3"
+         sodipodi:nodetypes="ccccc" />
+      <circle
+         style="fill:#ffffff;stroke:none;stroke-width:0.000706656;stroke-opacity:1"
+         id="path7329"
+         cx="0.83093083"
+         cy="0.36465427"
+         r="0.046002779" />
+      <rect
+         style="fill:#ffffff;stroke:none;stroke-width:0.00112987;stroke-opacity:1"
+         id="rect7433"
+         width="0.13591696"
+         height="0.033654388"
+         x="0.7651754"
+         y="0.37952676" />
+      <rect
+         style="fill:#ffffff;stroke:none;stroke-width:0.00111146;stroke-opacity:1"
+         id="rect7537"
+         width="0.033938274"
+         height="0.084132209"
+         x="0.76518553"
+         y="0.39106551" />
+      <rect
+         style="fill:#ffffff;stroke:none;stroke-width:0.00111146;stroke-opacity:1"
+         id="rect7537-6"
+         width="0.033938274"
+         height="0.084132209"
+         x="0.86709112"
+         y="0.3910107" />
+      <path
+         id="path8084"
+         clip-path="none"
+         style="fill:#ffffff;stroke:none;stroke-width:0.0243735px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 29.748047,1.7695312 -2.464844,0.00391 -0.568359,1.453125 h 2.683594 z M 26.382812,4.0761719 25.75,5.6972656 h 3.056641 L 29.195312,4.0761719 Z M 25.417969,6.546875 24.783203,8.1679688 h 3.431641 L 28.603516,6.546875 Z m -0.966797,2.4707031 -0.634766,1.6210939 h 3.806641 l 0.388672,-1.6210939 z m -0.966797,2.4707029 -0.632813,1.621094 h 4.179688 l 0.388672,-1.621094 z m -0.964844,2.470703 -0.632812,1.619141 h 4.552734 l 0.388672,-1.619141 z m -0.966797,2.470704 -0.632812,1.61914 h 4.927734 l 0.388672,-1.61914 z m -0.964843,2.470703 -0.632813,1.61914 h 5.300781 l 0.386719,-1.61914 z m -0.964844,2.46875 -0.560547,1.43164 h 5.646484 l 0.34375,-1.43164 z"
+         transform="matrix(0.04521619,0,0,0.04521619,-0.09160342,-0.07571556)" />
+    </g>
+  </g>
+  <metadata
+     id="metadata12302">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>robot-arm</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
