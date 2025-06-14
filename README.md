@@ -1,6 +1,4 @@
-<div align="center">
-<img src="https://github.com/user-attachments/assets/92c36a77-40d9-44d8-afa2-12417941534c" alt="logo"></img>
-</div>
+![cbf_logo_transparent_250px](https://github.com/user-attachments/assets/0304752c-cb75-4d53-b45f-b6b1a0912d9c)
 
 # CBFpy: Control Barrier Functions in Python and Jax
 
