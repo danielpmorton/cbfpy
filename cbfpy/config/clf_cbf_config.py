@@ -3,11 +3,11 @@
 
 ## Defining the problem:
 
-As with the CBF, we require implementation of the dynamics functions `f` and `g`, as well as the barrier function(s) 
+As with the CBF, we require implementation of the dynamics functions `f` and `g`, as well as the barrier function(s)
 `h`. Now, with the CLF-CBF, we require the definition of the Control Lyapunov Function (CLF) `V`. This CLF must be a
-positive definite function of the state. 
+positive definite function of the state.
 
-Depending on the relative degree of your barrier function(s), you should implement the `h_1` method 
+Depending on the relative degree of your barrier function(s), you should implement the `h_1` method
 (for a relative-degree-1 barrier), and/or the `h_2` method (for a relative-degree-2 barrier).
 
 Likewise, for the CLF, you should implement the `V_1` method (for a relative-degree-1 CLF), and/or the `V_2` method
@@ -24,7 +24,7 @@ CLF objective. These can be used to adjust the weightings between inputs, for in
 
 ## Relaxation:
 
-If the CBF constraints are not necessarily globally feasible, you can enable further relaxation in the CLFCBFConfig. 
+If the CBF constraints are not necessarily globally feasible, you can enable further relaxation in the CLFCBFConfig.
 However, since the CLF constraint was already relaxed with respect to the CBF constraint, this means that tuning the
 relaxation parameters is critical. In general, the penalty on the CBF relaxation should be much higher than the penalty
 on the CLF relaxation.
@@ -35,6 +35,7 @@ is infeasible.
 
 from typing import Optional
 
+import numpy as np
 import jax.numpy as jnp
 from jax import Array
 from jax.typing import ArrayLike
@@ -66,10 +67,13 @@ class CLFCBFConfig(CBFConfig):
         m (int): Control dimension
         u_min (ArrayLike, optional): Minimum control input, shape (m,). Defaults to None (Unconstrained).
         u_max (ArrayLike, optional): Maximum control input, shape (m,). Defaults to None (Unconstrained).
-        relax_cbf (bool, optional): Whether to allow for relaxation in the CBF QP. Defaults to True.
-        cbf_relaxation_penalty (float, optional): Penalty on the slack variable in the relaxed CBF QP. Defaults to 1e4.
-            Note: only applies if relax_cbf is True.
+        relax_qp (bool, optional): Whether to allow for relaxation in the CLF-CBF QP. Defaults to True.
+            Note: this is required for differentiability through the QP.
+        cbf_relaxation_penalty (float, optional): Penalty on the slack variable in the relaxed QP. Defaults to 1e4.
+            Note: only applies if relax_qp is True.
         clf_relaxation_penalty (float): Penalty on the CLF slack variable when enforcing the CBF. Defaults to 1e2
+        control_relaxation_penalty (float, optional): Penalty on the control constraint slack variables in the
+            relaxed QP. Defaults to 1e5. Note: only applies if relax_qp is True.
         solver_tol (float, optional): Tolerance for the QP solver. Defaults to 1e-3.
         init_args (tuple, optional): If your barrier function relies on additional arguments other than just the state,
             include an initial seed for these arguments here. This is to help test the output of the barrier function.
@@ -82,9 +86,10 @@ class CLFCBFConfig(CBFConfig):
         m: int,
         u_min: Optional[ArrayLike] = None,
         u_max: Optional[ArrayLike] = None,
-        relax_cbf: bool = True,
+        relax_qp: bool = True,
         cbf_relaxation_penalty: float = 1e4,
         clf_relaxation_penalty: float = 1e2,
+        control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
         init_args: tuple = (),
     ):
@@ -93,8 +98,9 @@ class CLFCBFConfig(CBFConfig):
             m,
             u_min,
             u_max,
-            relax_cbf,
+            relax_qp,
             cbf_relaxation_penalty,
+            control_relaxation_penalty,
             solver_tol,
             init_args,
         )
@@ -107,6 +113,12 @@ class CLFCBFConfig(CBFConfig):
                 f"Invalid clf_relaxation_penalty: {clf_relaxation_penalty}. Must be a positive value."
             )
         self.clf_relaxation_penalty = float(clf_relaxation_penalty)
+
+        # If relaxing the QP, need to have CLF penalty < CBF penalty < Control constraint penalty
+        if self.cbf_relaxation_penalty < self.clf_relaxation_penalty:
+            print("WARNING: CBF constraints have a lower penalty than the CLFs")
+        if self.control_relaxation_penalty < self.clf_relaxation_penalty:
+            print("WARNING: Control constraints have a lower penalty than the CLFs")
 
         # Check on CLF dimension
         z_test = jnp.ones(self.n)
@@ -144,7 +156,33 @@ class CLFCBFConfig(CBFConfig):
             )
         if not self._is_symmetric_psd(H_test):
             raise ValueError("H(z) must be symmetric positive semi-definite")
-        # TODO: add a warning if the CLF relaxation penalty > the QP relaxation penalty?
+
+        # Handle QP relaxation penalties, if relaxation is enabled
+        num_qp_constraints = (
+            self.num_cbf + self.num_clf
+            if not self.control_constrained
+            else self.num_cbf + self.num_clf + 2 * self.m
+        )
+        if self.control_constrained:
+            self.constraint_relaxation_penalties = tuple(
+                np.concatenate(
+                    [
+                        self.clf_relaxation_penalty * np.ones(self.num_clf),
+                        self.cbf_relaxation_penalty * np.ones(self.num_cbf),
+                        self.control_relaxation_penalty * np.ones(2 * self.m),
+                    ]
+                )
+            )
+        else:
+            self.constraint_relaxation_penalties = tuple(
+                np.concatenate(
+                    [
+                        self.clf_relaxation_penalty * np.ones(self.num_clf),
+                        self.cbf_relaxation_penalty * np.ones(self.num_cbf),
+                    ]
+                )
+            )
+        assert len(self.constraint_relaxation_penalties) == num_qp_constraints
 
     def V_1(self, z: ArrayLike, z_des: ArrayLike) -> Array:
         """Relative-Degree-1 Control Lyapunov Function (CLF)

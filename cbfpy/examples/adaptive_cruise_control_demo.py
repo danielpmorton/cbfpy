@@ -49,10 +49,11 @@ class ACCConfig(CLFCBFConfig):
             u_max=u_max,
             # Note: Relaxing the CLF-CBF QP is tricky because there is an additional relaxation
             # parameter already, balancing the CLF and CBF constraints.
-            relax_cbf=False,
-            # If indeed relaxing, ensure that the QP relaxation >> the CLF relaxation
+            relax_qp=False,
+            # If indeed relaxing, ensure that the CBF relaxation >> the CLF relaxation
             clf_relaxation_penalty=10.0,
-            cbf_relaxation_penalty=1e6,
+            cbf_relaxation_penalty=1e5,
+            control_relaxation_penalty=1e6,
         )
 
     def drag_force(self, v: float) -> float:

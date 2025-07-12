@@ -38,7 +38,7 @@ class DroneConfig(CBFConfig):
         super().__init__(
             n=6,  # State = [position, velocity]
             m=3,  # Control = [velocity]
-            relax_cbf=True,
+            relax_qp=True,
             init_args=(init_z_obs,),
             cbf_relaxation_penalty=1e6,
         )
@@ -73,7 +73,9 @@ class DroneConfig(CBFConfig):
                 - padding
             ]
         )
-        h_box_containment = jnp.concatenate([self.pos_max - z[:3], z[:3] - self.pos_min])
+        h_box_containment = jnp.concatenate(
+            [self.pos_max - z[:3], z[:3] - self.pos_min]
+        )
         return jnp.concatenate([h_obstacle_avoidance, h_box_containment])
 
     def alpha(self, h):

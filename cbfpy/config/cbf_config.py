@@ -3,13 +3,13 @@
 
 ## Defining the problem:
 
-CBFs have two primary implementation requirements: the dynamics functions, and the barrier function(s). 
+CBFs have two primary implementation requirements: the dynamics functions, and the barrier function(s).
 These can be specified through the `f`, `g`, and `h` methods, respectively. Note that the main requirements
 for these functions are that (1) the dynamics are control-affine, and (2) the barrier function(s) are "zeroing"
 barriers, as opposed to "reciprocal" barriers. A zeroing barrier is one which is positive in the interior of the
-safe set, and zero on the boundary. 
+safe set, and zero on the boundary.
 
-Depending on the relative degree of your barrier function(s), you should implement the `h_1` method 
+Depending on the relative degree of your barrier function(s), you should implement the `h_1` method
 (for a relative-degree-1 barrier), and/or the `h_2` method (for a relative-degree-2 barrier).
 
 ## Tuning the CBF:
@@ -30,7 +30,7 @@ does require that P is positive semi-definite.
 Depending on the construction of the barrier functions and if control limits are provided, the CBF QP may not always be
 feasible. If allowing for relaxation in the CBFConfig, a slack variable will be introduced to ensure that the
 problem is always feasible, with a high penalty on any infeasibility. This is generally useful for controller
-robustness, but means that safety is not guaranteed. 
+robustness, but means that safety is not guaranteed.
 
 If strict enforcement of the CBF is desired, your higest-level controller should handle the case where the QP
 is infeasible.
@@ -38,6 +38,7 @@ is infeasible.
 
 from typing import Optional, Callable
 from abc import ABC, abstractmethod
+import warnings
 
 import numpy as np
 import jax
@@ -67,9 +68,12 @@ class CBFConfig(ABC):
         m (int): Control dimension
         u_min (ArrayLike, optional): Minimum control input, shape (m,). Defaults to None (Unconstrained).
         u_max (ArrayLike, optional): Maximum control input, shape (m,). Defaults to None (Unconstrained).
-        relax_cbf (bool, optional): Whether to allow for relaxation in the CBF QP. Defaults to True.
-        cbf_relaxation_penalty (float, optional): Penalty on the slack variable in the relaxed CBF QP. Defaults to 1e3.
-            Note: only applies if relax_cbf is True.
+        relax_qp (bool, optional): Whether to allow for relaxation in the CBF QP. Defaults to True.
+            Note: this is required for differentiability through the QP.
+        cbf_relaxation_penalty (float, optional): Penalty on the CBF slack variables in the relaxed QP.
+            Defaults to 1e3. Note: only applies if relax_qp is True.
+        control_relaxation_penalty (float, optional): Penalty on the control constraint slack variables in the
+            relaxed QP. Defaults to 1e5. Note: only applies if relax_qp is True.
         solver_tol (float, optional): Tolerance for the QP solver. Defaults to 1e-3.
         init_args (tuple, optional): If your barrier function relies on additional arguments other than just the state,
             include an initial seed for these arguments here. This is to help test the output of the barrier function.
@@ -82,8 +86,9 @@ class CBFConfig(ABC):
         m: int,
         u_min: Optional[ArrayLike] = None,
         u_max: Optional[ArrayLike] = None,
-        relax_cbf: bool = True,
+        relax_qp: bool = True,
         cbf_relaxation_penalty: float = 1e3,
+        control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
         init_args: tuple = (),
     ):
@@ -95,9 +100,9 @@ class CBFConfig(ABC):
             raise ValueError(f"m must be a positive integer. Got: {m}")
         self.m = m
 
-        if not isinstance(relax_cbf, bool):
-            raise ValueError(f"relax_cbf must be a boolean. Got: {relax_cbf}")
-        self.relax_cbf = relax_cbf
+        if not isinstance(relax_qp, bool):
+            raise ValueError(f"relax_qp must be a boolean. Got: {relax_qp}")
+        self.relax_qp = relax_qp
 
         if not (
             isinstance(cbf_relaxation_penalty, (int, float))
@@ -112,9 +117,27 @@ class CBFConfig(ABC):
             raise ValueError(f"solver_tol must be a positive value. Got: {solver_tol}")
         self.solver_tol = float(solver_tol)
 
+        if self.solver_tol > 1e-2:
+            print(
+                f"WARNING: solver tolerance is quite high ({self.solver_tol}). "
+                + " Solution will likely be poor."
+            )
+
         if not isinstance(init_args, tuple):
             raise ValueError(f"init_args must be a tuple. Got: {init_args}")
         self.init_args = init_args
+
+        if not (
+            isinstance(control_relaxation_penalty, (int, float))
+            and control_relaxation_penalty >= 0
+        ):
+            raise ValueError(
+                f"control_relaxation_penalty must be a non-negative value. Got: {control_relaxation_penalty}"
+            )
+        self.control_relaxation_penalty = float(control_relaxation_penalty)
+
+        if self.control_relaxation_penalty < self.cbf_relaxation_penalty:
+            print("WARNING: Control constraints have a lower penalty than the CBFs.")
 
         # Control limits require a bit of extra handling. They can be both None if unconstrained,
         # but we should not have one limit as None and the other as some value
@@ -196,6 +219,25 @@ class CBFConfig(ABC):
             )
         if not self._is_symmetric_psd(P_test):
             raise ValueError("P matrix must be symmetric positive semi-definite")
+
+        # Handle QP relaxation penalties, if relaxation is enabled
+        num_qp_constraints = (
+            self.num_cbf if not self.control_constrained else self.num_cbf + 2 * self.m
+        )
+        if self.control_constrained:
+            self.constraint_relaxation_penalties = tuple(
+                np.concatenate(
+                    [
+                        self.cbf_relaxation_penalty * np.ones(self.num_cbf),
+                        self.control_relaxation_penalty * np.ones(2 * self.m),
+                    ]
+                )
+            )
+        else:
+            self.constraint_relaxation_penalties = tuple(
+                self.cbf_relaxation_penalty * np.ones(self.num_cbf)
+            )
+        assert len(self.constraint_relaxation_penalties) == num_qp_constraints
 
     ## Control Affine Dynamics ##
 

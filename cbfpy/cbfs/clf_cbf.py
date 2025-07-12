@@ -1,7 +1,7 @@
 """
 # Control Lyapunov Function / Control Barrier Functions (CLF-CBFs)
 
-Whereas a CBF acts as a safety filter on top of a nominal controller, a CLF-CBF acts as a safe controller itself, 
+Whereas a CBF acts as a safety filter on top of a nominal controller, a CLF-CBF acts as a safe controller itself,
 based on a control objective defined by the CLF and a safety constraint defined by the CBF. Note that the CLF
 objective should be quadratic and positive-definite to fit in this QP framework.
 
@@ -46,13 +46,7 @@ from jax.typing import ArrayLike
 import qpax
 
 from cbfpy.config.clf_cbf_config import CLFCBFConfig
-from cbfpy.utils.jax_utils import conditional_jit
 from cbfpy.utils.general_utils import print_warning
-
-# Debugging flags to disable jit in specific sections of the code.
-# Note: If any higher-level jits exist, those must also be set to debug (disable jit)
-DEBUG_CONTROLLER = False
-DEBUG_QP_DATA = False
 
 
 @jax.tree_util.register_static
@@ -87,9 +81,9 @@ class CLFCBF:
         u_min: Optional[tuple],
         u_max: Optional[tuple],
         control_constrained: bool,
-        relax_cbf: bool,
-        cbf_relaxation_penalty: float,
+        relax_qp: bool,
         clf_relaxation_penalty: float,
+        constraint_relaxation_penalties: tuple,
         h_1: Callable[[ArrayLike], Array],
         h_2: Callable[[ArrayLike], Array],
         f: Callable[[ArrayLike], Array],
@@ -111,9 +105,9 @@ class CLFCBF:
         self.u_min = u_min
         self.u_max = u_max
         self.control_constrained = control_constrained
-        self.relax_cbf = relax_cbf
-        self.cbf_relaxation_penalty = cbf_relaxation_penalty
+        self.relax_qp = relax_qp
         self.clf_relaxation_penalty = clf_relaxation_penalty
+        self.constraint_relaxation_penalties = constraint_relaxation_penalties
         self.h_1 = h_1
         self.h_2 = h_2
         self.f = f
@@ -127,10 +121,6 @@ class CLFCBF:
         self.H = H
         self.F = F
         self.solver_tol = solver_tol
-        if relax_cbf:
-            self.qp_solver: Callable = jax.jit(qpax.solve_qp_elastic)
-        else:
-            self.qp_solver: Callable = jax.jit(qpax.solve_qp)
 
     @classmethod
     def from_config(cls, config: CLFCBFConfig) -> "CLFCBF":
@@ -151,9 +141,9 @@ class CLFCBF:
             config.u_min,
             config.u_max,
             config.control_constrained,
-            config.relax_cbf,
-            config.cbf_relaxation_penalty,
+            config.relax_qp,
             config.clf_relaxation_penalty,
+            config.constraint_relaxation_penalties,
             config.h_1,
             config.h_2,
             config.f,
@@ -195,7 +185,7 @@ class CLFCBF:
                 "LgV is zero. Consider increasing the relative degree or modifying the Lyapunov function."
             )
 
-    @conditional_jit(not DEBUG_CONTROLLER)
+    @jax.jit
     def controller(self, z: Array, z_des: Array, *h_args) -> Array:
         """Compute the CLF-CBF optimal control input, optimizing for the CLF objective while
         satisfying the CBF safety constraint.
@@ -209,17 +199,17 @@ class CLFCBF:
             Array: Safe control input, shape (m,)
         """
         P, q, A, b, G, h = self.qp_data(z, z_des, *h_args)
-        if self.relax_cbf:
-            x_qp, t_qp, s1_qp, s2_qp, z1_qp, z2_qp, converged, iters = self.qp_solver(
+        if self.relax_qp:
+            x_qp = qpax.solve_qp_elastic_primal(
                 P,
                 q,
                 G,
                 h,
-                self.cbf_relaxation_penalty,
+                penalty=jnp.asarray(self.constraint_relaxation_penalties),
                 solver_tol=self.solver_tol,
             )
         else:
-            x_qp, s_qp, z_qp, y_qp, converged, iters = self.qp_solver(
+            x_qp, s_qp, z_qp, y_qp, converged, iters = qpax.solve_qp(
                 P,
                 q,
                 A,
@@ -227,10 +217,6 @@ class CLFCBF:
                 G,
                 h,
                 solver_tol=self.solver_tol,
-            )
-        if DEBUG_CONTROLLER:
-            print(
-                f"{'Converged' if converged else 'Did not converge'}. Iterations: {iters}"
             )
         return x_qp[: self.m]
 
@@ -310,6 +296,7 @@ class CLFCBF:
         Returns:
             Array: CLF evaluation, shape (num_clf,)
         """
+
         def _V_2(state):
             return self.V_2(state, z_des)
 
@@ -460,7 +447,6 @@ class CLFCBF:
         else:
             return h
 
-    @conditional_jit(not DEBUG_QP_DATA)
     def qp_data(
         self, z: Array, z_des: Array, *h_args
     ) -> Tuple[Array, Array, Array, Array, Array, Array]:
