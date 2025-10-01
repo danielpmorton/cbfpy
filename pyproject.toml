@@ -15,7 +15,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "numpy<2", # Pybullet has trouble with numpy 2.0
+    "numpy",
     "jax",
     "jaxlib",
     "qpax",
@@ -27,7 +27,8 @@ Repository = "https://github.com/danielpmorton/cbfpy/"
 
 [project.optional-dependencies]
 examples = [
-    "pybullet",
+    # Note: older versions of Pybullet have trouble with numpy 2.0
+    "pybullet>=3.2.7",
     "pygame",
     # "gym_pybullet_drones @ git+https://github.com/danielpmorton/gym-pybullet-drones.git",
     "wheel",
