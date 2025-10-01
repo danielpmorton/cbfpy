@@ -20,7 +20,7 @@ If you use CBFpy in your research, please cite the following [paper](https://arx
   title = {Safe, Task-Consistent Manipulation with Operational Space Control Barrier Functions},
   year = {2025},
   journal = {arXiv preprint arXiv:2503.06736},
-  note = {Submitted to IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, 2025},
+  note = {Accepted to IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, 2025},
 }
 ```
 
