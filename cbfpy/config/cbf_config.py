@@ -136,9 +136,6 @@ class CBFConfig(ABC):
             )
         self.control_relaxation_penalty = float(control_relaxation_penalty)
 
-        if self.control_relaxation_penalty < self.cbf_relaxation_penalty:
-            print("WARNING: Control constraints have a lower penalty than the CBFs.")
-
         # Control limits require a bit of extra handling. They can be both None if unconstrained,
         # but we should not have one limit as None and the other as some value
         u_min = np.asarray(u_min, dtype=float).flatten() if u_min is not None else None
@@ -159,6 +156,12 @@ class CBFConfig(ABC):
             u_max = tuple(u_max)
         self.u_min = u_min
         self.u_max = u_max
+
+        if (
+            self.control_constrained
+            and self.control_relaxation_penalty < self.cbf_relaxation_penalty
+        ):
+            print("WARNING: Control constraints have a lower penalty than the CBFs.")
 
         # Test if the methods are provided and verify their output dimension
         z_test = jnp.ones(self.n)

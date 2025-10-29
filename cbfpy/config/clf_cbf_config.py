@@ -117,7 +117,10 @@ class CLFCBFConfig(CBFConfig):
         # If relaxing the QP, need to have CLF penalty < CBF penalty < Control constraint penalty
         if self.cbf_relaxation_penalty < self.clf_relaxation_penalty:
             print("WARNING: CBF constraints have a lower penalty than the CLFs")
-        if self.control_relaxation_penalty < self.clf_relaxation_penalty:
+        if (
+            self.control_constrained
+            and self.control_relaxation_penalty < self.clf_relaxation_penalty
+        ):
             print("WARNING: Control constraints have a lower penalty than the CLFs")
 
         # Check on CLF dimension
