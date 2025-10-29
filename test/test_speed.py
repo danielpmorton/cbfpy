@@ -1,11 +1,11 @@
 """Speed tests for the CBF solver
 
 We evaluate the speed of the solver NOT just via the QP solve but via the whole process
-(solving for the nominal control input, constructing the QP matrices, and then solving). 
+(solving for the nominal control input, constructing the QP matrices, and then solving).
 This provides a more accurate view of what the controller frequency would actually be if
 deployed on the robot.
 
-These test cases can also be used to check that modifications to the CBF implementation 
+These test cases can also be used to check that modifications to the CBF implementation
 do not significantly degrade performance
 """
 

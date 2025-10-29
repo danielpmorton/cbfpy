@@ -6,7 +6,7 @@ within the limits (+ some margin)
 
 This uses a single-integrator reduced model of the manipulator dynamics.
 We define the state as the joint positions and assume that we can directly control the joint velocities
-i.e. z = [q1, q2, q3] and u = [q1_dot, q2_dot, q3_dot] 
+i.e. z = [q1, q2, q3] and u = [q1_dot, q2_dot, q3_dot]
 """
 
 import numpy as np

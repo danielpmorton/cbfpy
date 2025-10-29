@@ -3,7 +3,7 @@
 
 This is a convenient structure for building demo environments to test CBFs. However, it is not necessary to use this.
 
-For instance, going back to the CBF usage pseudocode, 
+For instance, going back to the CBF usage pseudocode,
 ```
 while True:
     z = get_state()
@@ -11,10 +11,10 @@ while True:
     u_nom = nominal_controller(z, z_des)
     u = cbf.safety_filter(z, u_nom)
     apply_control(u)
-    step() 
+    step()
 ```
 We use this base environment to set up the `get_state`, `get_desired_state`, `apply_control`, and `step` methods in
-any derived environments. 
+any derived environments.
 """
 
 from abc import ABC, abstractmethod

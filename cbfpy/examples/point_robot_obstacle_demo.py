@@ -9,8 +9,8 @@ This demo is interactive: click and drag the obstacle to move it around.
 Here, we have double integrator dynamics: z = [position, velocity], u = [acceleration]
 and we also use the state of the obstacle as an input to the CBF: z_obs = [position, velocity]
 
-This example includes both relative-degree-1 and relative-degree-2 CBFs. Staying inside the safe-set box is 
-RD2, since we have a positional barrier with acceleration inputs. Avoiding the obstacle is relative-degree-1, 
+This example includes both relative-degree-1 and relative-degree-2 CBFs. Staying inside the safe-set box is
+RD2, since we have a positional barrier with acceleration inputs. Avoiding the obstacle is relative-degree-1,
 because this is based on the relative velocity between the two objects.
 """
 

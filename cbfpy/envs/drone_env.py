@@ -1,5 +1,5 @@
 """
-# Drone Environment 
+# Drone Environment
 
 This is a wrapper around the gym-pybullet-drones environment, using velocity control.
 """
