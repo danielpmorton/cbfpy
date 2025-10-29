@@ -15,7 +15,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "numpy<2", # Pybullet has trouble with numpy 2.0
+    "numpy",
     "jax",
     "jaxlib",
     "qpax",
