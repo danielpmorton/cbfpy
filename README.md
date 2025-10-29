@@ -24,6 +24,8 @@ If you use CBFpy in your research, please cite the following [paper](https://arx
 }
 ```
 
+[![Paper](http://img.shields.io/badge/arXiv-2503.06736-B31B1B.svg)](https://arxiv.org/abs/2503.06736)
+
 ## Installation 
 
 ### From PyPI
