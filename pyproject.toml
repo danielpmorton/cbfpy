@@ -16,8 +16,8 @@ classifiers = [
 ]
 dependencies = [
     "numpy",
-    "jax",
-    "jaxlib",
+    "jax",  # 0.4.30 recommended for best CPU performance
+    "jaxlib",  # 0.4.30 recommended for best CPU performance
     "qpax",
 ]
 
@@ -36,13 +36,15 @@ examples = [
 ]
 dev = ["mkdocs-material", "mkdocstrings[python]", "pylint", "black"]
 all = [
-    "pylint",
-    "black",
-    "pybullet",
+    "pybullet>=3.2.7",
     "pygame",
     # "gym_pybullet_drones @ git+https://github.com/danielpmorton/gym-pybullet-drones.git",
+    "wheel",
+    "matplotlib",
     "mkdocs-material",
     "mkdocstrings[python]",
+    "pylint",
+    "black",
 ]
 
 [tool.setuptools.packages.find]
