@@ -2,66 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/pyenv/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/acc_demo/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/arm_envs/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/base_env/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/car_env/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/cbf/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/cbf_config/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/clf_cbf/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/clf_cbf_config/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/drone_demo/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/drone_env/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/joint_limits_demo/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/point_robot_demo/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/point_robot_envs/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://danielpmorton.github.io/cbfpy/api/point_robot_obstacle_demo/</loc>
-         <lastmod>2025-03-17</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
 </urlset>
