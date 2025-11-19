@@ -30,6 +30,7 @@ import jax
 import jax.numpy as jnp
 from jax import Array
 from jax.typing import ArrayLike
+import numpy as np
 import qpax
 
 from cbfpy.config.cbf_config import CBFConfig
@@ -134,8 +135,8 @@ class CBF:
 
         try:
             # TODO: Decide if this should be checked on a row-by-row basis or via the full matrix
-            test_lgh = self.Lgh(jnp.ones(self.n), *args, **kwargs)
-            if jnp.allclose(test_lgh, 0):
+            test_lgh = self.Lgh(np.ones(self.n), *args, **kwargs)
+            if np.allclose(test_lgh, 0):
                 print_warning(
                     "Lgh is zero. Consider increasing the relative degree or modifying the barrier function."
                 )

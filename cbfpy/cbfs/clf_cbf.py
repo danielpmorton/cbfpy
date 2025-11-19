@@ -43,6 +43,7 @@ import jax
 import jax.numpy as jnp
 from jax import Array
 from jax.typing import ArrayLike
+import numpy as np
 import qpax
 
 from cbfpy.config.clf_cbf_config import CLFCBFConfig
@@ -164,10 +165,10 @@ class CLFCBF:
     def _validate_instance(self, *args, **kwargs) -> None:
         """Checks that the CLF-CBF is valid; warns the user if not"""
 
-        test_z = jnp.ones(self.n)
+        test_z = np.ones(self.n)
         try:
             test_lgh = self.Lgh(test_z, *args, **kwargs)
-            if jnp.allclose(test_lgh, 0):
+            if np.allclose(test_lgh, 0):
                 print_warning(
                     "Lgh is zero. Consider increasing the relative degree or modifying the barrier function."
                 )
@@ -177,7 +178,7 @@ class CLFCBF:
                 + "Please provide an initial seed for these args in the config's init_args input"
             )
         test_lgv = self.LgV(test_z, test_z, *args, **kwargs)
-        if jnp.allclose(test_lgv, 0):
+        if np.allclose(test_lgv, 0):
             print_warning(
                 "LgV is zero. Consider increasing the relative degree or modifying the Lyapunov function."
             )
