@@ -158,18 +158,15 @@ class CLFCBF:
             config.F,
             config.solver_tol,
         )
-        instance._validate_instance(*config.init_args)
+        instance._validate_instance(*config.init_args, **config.init_kwargs)
         return instance
 
-    def _validate_instance(self, *h_args) -> None:
-        """Checks that the CLF-CBF is valid; warns the user if not
+    def _validate_instance(self, *args, **kwargs) -> None:
+        """Checks that the CLF-CBF is valid; warns the user if not"""
 
-        Args:
-            *h_args: Optional additional arguments for the barrier function.
-        """
         test_z = jnp.ones(self.n)
         try:
-            test_lgh = self.Lgh(test_z, *h_args)
+            test_lgh = self.Lgh(test_z, *args, **kwargs)
             if jnp.allclose(test_lgh, 0):
                 print_warning(
                     "Lgh is zero. Consider increasing the relative degree or modifying the barrier function."
@@ -179,26 +176,25 @@ class CLFCBF:
                 "Cannot test Lgh; missing additional arguments.\n"
                 + "Please provide an initial seed for these args in the config's init_args input"
             )
-        test_lgv = self.LgV(test_z, test_z)
+        test_lgv = self.LgV(test_z, test_z, *args, **kwargs)
         if jnp.allclose(test_lgv, 0):
             print_warning(
                 "LgV is zero. Consider increasing the relative degree or modifying the Lyapunov function."
             )
 
     @jax.jit
-    def controller(self, z: Array, z_des: Array, *h_args) -> Array:
+    def controller(self, z: Array, z_des: Array, *args, **kwargs) -> Array:
         """Compute the CLF-CBF optimal control input, optimizing for the CLF objective while
         satisfying the CBF safety constraint.
 
         Args:
             z (Array): State, shape (n,)
             z_des (Array): Desired state, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Safe control input, shape (m,)
         """
-        P, q, A, b, G, h = self.qp_data(z, z_des, *h_args)
+        P, q, A, b, G, h = self.qp_data(z, z_des, *args, **kwargs)
         if self.relax_qp:
             x_qp = qpax.solve_qp_elastic_primal(
                 P,
@@ -220,12 +216,11 @@ class CLFCBF:
             )
         return x_qp[: self.m]
 
-    def h(self, z: ArrayLike, *h_args) -> Array:
+    def h(self, z: ArrayLike, *args, **kwargs) -> Array:
         """Barrier function(s)
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Barrier function evaluation, shape (num_barr,)
@@ -233,16 +228,16 @@ class CLFCBF:
 
         # Take any relative-degree-2 barrier functions and convert them to relative-degree-1
         def _h_2(state):
-            return self.h_2(state, *h_args)
+            return self.h_2(state, *args, **kwargs)
 
-        h_2, dh_2_dt = jax.jvp(_h_2, (z,), (self.f(z),))
-        h_2_as_rd1 = dh_2_dt + self.alpha_2(h_2)
+        h_2, dh_2_dt = jax.jvp(_h_2, (z,), (self.f(z, *args, **kwargs),))
+        h_2_as_rd1 = dh_2_dt + self.alpha_2(h_2, *args, **kwargs)
 
         # Merge the relative-degree-1 and relative-degree-2 barrier functions
-        return jnp.concatenate([self.h_1(z, *h_args), h_2_as_rd1])
+        return jnp.concatenate([self.h_1(z, *args, **kwargs), h_2_as_rd1])
 
     def h_and_Lfh(  # pylint: disable=invalid-name
-        self, z: ArrayLike, *h_args
+        self, z: ArrayLike, *args, **kwargs
     ) -> Tuple[Array, Array]:
         """Lie derivative of the barrier function(s) wrt the autonomous dynamics `f(z)`
 
@@ -250,7 +245,6 @@ class CLFCBF:
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             h (Array): Barrier function evaluation, shape (num_barr,)
@@ -260,16 +254,15 @@ class CLFCBF:
         # with the bonus benefit of also evaluating the barrier function
 
         def _h(state):
-            return self.h(state, *h_args)
+            return self.h(state, *args, **kwargs)
 
-        return jax.jvp(_h, (z,), (self.f(z),))
+        return jax.jvp(_h, (z,), (self.f(z, *args, **kwargs),))
 
-    def Lgh(self, z: ArrayLike, *h_args) -> Array:  # pylint: disable=invalid-name
+    def Lgh(self, z: ArrayLike, *args, **kwargs) -> Array:  # pylint: disable=invalid-name
         """Lie derivative of the barrier function(s) wrt the control dynamics `g(z)u`
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Lgh, shape (num_barr, m)
@@ -277,16 +270,16 @@ class CLFCBF:
         # Note: the below code is just a more efficient way of stating `Lgh = jax.jacobian(self.h)(z) @ self.g(z)`
 
         def _h(state):
-            return self.h(state, *h_args)
+            return self.h(state, *args, **kwargs)
 
         def _jvp(g_column):
             return jax.jvp(_h, (z,), (g_column,))[1]
 
-        return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z))
+        return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z, *args, **kwargs))
 
     ## CLF functions ##
 
-    def V(self, z: ArrayLike, z_des: ArrayLike) -> Array:
+    def V(self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs) -> Array:
         """Control Lyapunov Function(s)
 
         Args:
@@ -298,17 +291,17 @@ class CLFCBF:
         """
 
         def _V_2(state):
-            return self.V_2(state, z_des)
+            return self.V_2(state, z_des, *args, **kwargs)
 
         # Take any relative-degree-2 CLFs and convert them to relative-degree-1
         # NOTE: If adding args to the CLF, create a wrapper func like with the barrier function
-        V_2, dV_2_dt = jax.jvp(_V_2, (z,), (self.f(z),))
-        V2_rd1 = dV_2_dt + self.gamma_2(V_2)
+        V_2, dV_2_dt = jax.jvp(_V_2, (z,), (self.f(z, *args, **kwargs),))
+        V2_rd1 = dV_2_dt + self.gamma_2(V_2, *args, **kwargs)
 
         # Merge the relative-degree-1 and relative-degree-2 CLFs
-        return jnp.concatenate([self.V_1(z, z_des), V2_rd1])
+        return jnp.concatenate([self.V_1(z, z_des, *args, **kwargs), V2_rd1])
 
-    def V_and_LfV(self, z: ArrayLike, z_des: ArrayLike) -> Tuple[Array, Array]:
+    def V_and_LfV(self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs) -> Tuple[Array, Array]:
         """Lie derivative of the CLF wrt the autonomous dynamics `f(z)`
 
         The evaluation of the CLF is also returned "for free", a byproduct of the jacobian-vector-product
@@ -323,11 +316,11 @@ class CLFCBF:
         """
 
         def _V(state):
-            return self.V(state, z_des)
+            return self.V(state, z_des, *args, **kwargs)
 
-        return jax.jvp(_V, (z,), (self.f(z),))
+        return jax.jvp(_V, (z,), (self.f(z, *args, **kwargs),))
 
-    def LgV(self, z: ArrayLike, z_des: ArrayLike) -> Array:
+    def LgV(self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs) -> Array:
         """Lie derivative of the CLF wrt the control dynamics `g(z)u`
 
         Args:
@@ -339,50 +332,48 @@ class CLFCBF:
         """
 
         def _V(state):
-            return self.V(state, z_des)
+            return self.V(state, z_des, *args, **kwargs)
 
         def _jvp(g_column):
             return jax.jvp(_V, (z,), (g_column,))[1]
 
-        return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z))
+        return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z, *args, **kwargs))
 
     ## QP Matrices ##
 
     def P_qp(  # pylint: disable=invalid-name
-        self, z: Array, z_des: Array, *h_args
+        self, z: Array, z_des: Array, *args, **kwargs
     ) -> Array:
         """Quadratic term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)
 
         Args:
             z (Array): State, shape (n,)
             z_des (Array): Desired state, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: P matrix, shape (m, m)
         """
         return jnp.block(
             [
-                [self.H(z), jnp.zeros((self.m, 1))],
+                [self.H(z, *args, **kwargs), jnp.zeros((self.m, 1))],
                 [jnp.zeros((1, self.m)), jnp.atleast_1d(self.clf_relaxation_penalty)],
             ]
         )
 
-    def q_qp(self, z: Array, z_des: Array, *h_args) -> Array:
+    def q_qp(self, z: Array, z_des: Array, *args, **kwargs) -> Array:
         """Linear term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)
 
         Args:
             z (Array): State, shape (n,)
             z_des (Array): Desired state, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Q vector, shape (m,)
         """
-        return jnp.concatenate([self.F(z), jnp.array([0.0])])
+        return jnp.concatenate([self.F(z, *args, **kwargs), jnp.array([0.0])])
 
     def G_qp(  # pylint: disable=invalid-name
-        self, z: Array, z_des: Array, *h_args
+        self, z: Array, z_des: Array, *args, **kwargs
     ) -> Array:
         """Inequality constraint matrix for the QP (`Gx <= h`)
 
@@ -394,15 +385,14 @@ class CLFCBF:
         Args:
             z (Array): State, shape (n,)
             z_des (Array): Desired state, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: G matrix, shape (num_constraints, m)
         """
         G = jnp.block(
             [
-                [self.LgV(z, z_des), -1.0 * jnp.ones((self.num_clf, 1))],
-                [-self.Lgh(z, *h_args), jnp.zeros((self.num_cbf, 1))],
+                [self.LgV(z, z_des, *args, **kwargs), -1.0 * jnp.ones((self.num_clf, 1))],
+                [-self.Lgh(z, *args, **kwargs), jnp.zeros((self.num_cbf, 1))],
             ]
         )
         if self.control_constrained:
@@ -416,7 +406,7 @@ class CLFCBF:
         else:
             return G
 
-    def h_qp(self, z: Array, z_des: Array, *h_args) -> Array:
+    def h_qp(self, z: Array, z_des: Array, *args, **kwargs) -> Array:
         """Upper bound on constraints for the QP (`Gx <= h`)
 
         Note:
@@ -427,17 +417,16 @@ class CLFCBF:
         Args:
             z (Array): State, shape (n,)
             z_des (Array): Desired state, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: h vector, shape (num_constraints,)
         """
-        hz, lfh = self.h_and_Lfh(z, *h_args)
-        vz, lfv = self.V_and_LfV(z, z_des)
+        hz, lfh = self.h_and_Lfh(z, *args, **kwargs)
+        vz, lfv = self.V_and_LfV(z, z_des, *args, **kwargs)
         h = jnp.concatenate(
             [
-                -lfv - self.gamma(vz),
-                self.alpha(hz) + lfh,
+                -lfv - self.gamma(vz, *args, **kwargs),
+                self.alpha(hz, *args, **kwargs) + lfh,
             ]
         )
         if self.control_constrained:
@@ -448,7 +437,7 @@ class CLFCBF:
             return h
 
     def qp_data(
-        self, z: Array, z_des: Array, *h_args
+        self, z: Array, z_des: Array, *args, **kwargs
     ) -> Tuple[Array, Array, Array, Array, Array, Array]:
         """Constructs the QP matrices based on the current state and desired control
 
@@ -469,7 +458,6 @@ class CLFCBF:
         Args:
             z (Array): State, shape (n,)
             z_des (Array): Desired state, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             P (Array): Quadratic term in the QP objective, shape (m + 1, m + 1)
@@ -480,10 +468,10 @@ class CLFCBF:
             h (Array): Upper bound on constraints, shape (num_constraints,)
         """
         return (
-            self.P_qp(z, z_des, *h_args),
-            self.q_qp(z, z_des, *h_args),
+            self.P_qp(z, z_des, *args, **kwargs),
+            self.q_qp(z, z_des, *args, **kwargs),
             jnp.zeros((0, self.m + 1)),  # Equality matrix (not used for CLF-CBF)
             jnp.zeros(0),  # Equality vector (not used for CLF-CBF)
-            self.G_qp(z, z_des, *h_args),
-            self.h_qp(z, z_des, *h_args),
+            self.G_qp(z, z_des, *args, **kwargs),
+            self.h_qp(z, z_des, *args, **kwargs),
         )

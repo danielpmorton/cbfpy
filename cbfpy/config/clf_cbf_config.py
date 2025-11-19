@@ -75,9 +75,10 @@ class CLFCBFConfig(CBFConfig):
         control_relaxation_penalty (float, optional): Penalty on the control constraint slack variables in the
             relaxed QP. Defaults to 1e5. Note: only applies if relax_qp is True.
         solver_tol (float, optional): Tolerance for the QP solver. Defaults to 1e-3.
-        init_args (tuple, optional): If your barrier function relies on additional arguments other than just the state,
-            include an initial seed for these arguments here. This is to help test the output of the barrier function.
-            Defaults to ().
+        init_args (tuple, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
+            args other than just the state, include an initial seed for these args here. Defaults to None.
+        init_kwargs (dict, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
+            kwargs other than just the state, include an initial seed for these kwargs here. Defaults to None.
     """
 
     def __init__(
@@ -91,7 +92,8 @@ class CLFCBFConfig(CBFConfig):
         clf_relaxation_penalty: float = 1e2,
         control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
-        init_args: tuple = (),
+        init_args: Optional[tuple] = None,
+        init_kwargs: Optional[dict] = None
     ):
         super().__init__(
             n,
@@ -103,6 +105,7 @@ class CLFCBFConfig(CBFConfig):
             control_relaxation_penalty,
             solver_tol,
             init_args,
+            init_kwargs,
         )
 
         if not (
@@ -125,8 +128,8 @@ class CLFCBFConfig(CBFConfig):
 
         # Check on CLF dimension
         z_test = jnp.ones(self.n)
-        v1_test = self.V_1(z_test, z_test)
-        v2_test = self.V_2(z_test, z_test)
+        v1_test = self.V_1(z_test, z_test, *self.init_args, **self.init_kwargs)
+        v2_test = self.V_2(z_test, z_test, *self.init_args, **self.init_kwargs)
         if v1_test.ndim != 1 or v2_test.ndim != 1:
             raise ValueError("CLF(s) must output 1D arrays")
         self.num_rd1_clf = v1_test.shape[0]
@@ -138,8 +141,8 @@ class CLFCBFConfig(CBFConfig):
                 + "\nYou can implement this via the V_1 and/or V_2 methods in your config class"
             )
         v_test = jnp.concatenate([v1_test, v2_test])
-        gamma_test = self.gamma(v_test)
-        gamma_2_test = self.gamma_2(v2_test)
+        gamma_test = self.gamma(v_test, *self.init_args, **self.init_kwargs)
+        gamma_2_test = self.gamma_2(v2_test, *self.init_args, **self.init_kwargs)
         if gamma_test.shape != (self.num_clf,):
             raise ValueError(
                 f"Invalid shape for gamma(V(z)): {gamma_test.shape}. Expected ({self.num_clf},)"
@@ -150,9 +153,9 @@ class CLFCBFConfig(CBFConfig):
                 f"Invalid shape for gamma_2(V_2(z)): {gamma_2_test.shape}. Expected ({self.num_rd2_clf},)"
                 + "\nCheck that the output of the gamma_2() function matches the number of RD2 CLFs"
             )
-        self._check_class_kappa(self.gamma, self.num_clf)
-        self._check_class_kappa(self.gamma_2, self.num_rd2_clf)
-        H_test = self.H(z_test)
+        self._check_class_kappa(self.gamma, self.num_clf, *self.init_args, **self.init_kwargs)
+        self._check_class_kappa(self.gamma_2, self.num_rd2_clf, *self.init_args, **self.init_kwargs)
+        H_test = self.H(z_test, *self.init_args, **self.init_kwargs)
         if H_test.shape != (self.m, self.m):
             raise ValueError(
                 f"Invalid shape for H(z): {H_test.shape}. Expected ({self.m}, {self.m})"
@@ -187,7 +190,7 @@ class CLFCBFConfig(CBFConfig):
             )
         assert len(self.constraint_relaxation_penalties) == num_qp_constraints
 
-    def V_1(self, z: ArrayLike, z_des: ArrayLike) -> Array:
+    def V_1(self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs) -> Array:
         """Relative-Degree-1 Control Lyapunov Function (CLF)
 
         A CLF is a positive-definite function which evaluates to zero at the equilibrium point, and is
@@ -210,7 +213,7 @@ class CLFCBFConfig(CBFConfig):
         return jnp.array([])
 
     # TODO: Check if the math behind this is actually valid
-    def V_2(self, z: ArrayLike, z_des: ArrayLike) -> Array:
+    def V_2(self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs) -> Array:
         """Relative-Degree-2 (high-order) Control Lyapunov Function (CLF)
 
         A CLF is a positive-definite function which evaluates to zero at the equilibrium point, and is
@@ -233,7 +236,7 @@ class CLFCBFConfig(CBFConfig):
         """
         return jnp.array([])
 
-    def gamma(self, v: ArrayLike) -> Array:
+    def gamma(self, v: ArrayLike, *args, **kwargs) -> Array:
         """A class Kappa function, dictating the "gain" of the CLF
 
         For reference, a class Kappa function is a monotonically increasing function which passes through the origin.
@@ -248,7 +251,7 @@ class CLFCBFConfig(CBFConfig):
         """
         return v
 
-    def gamma_2(self, v_2: ArrayLike) -> Array:
+    def gamma_2(self, v_2: ArrayLike, *args, **kwargs) -> Array:
         """A second class Kappa function, dictating the "gain" associated with the derivative of the CLF
 
         For reference, a class Kappa function is a monotonically increasing function which passes through the origin.
@@ -263,7 +266,7 @@ class CLFCBFConfig(CBFConfig):
         """
         return v_2
 
-    def H(self, z: ArrayLike) -> Array:
+    def H(self, z: ArrayLike, *args, **kwargs) -> Array:
         """Matrix defining the quadratic control term in the CLF objective (minimize 0.5 * u^T H u + F^T u)
 
         **Must be PSD!**
@@ -279,7 +282,7 @@ class CLFCBFConfig(CBFConfig):
         """
         return jnp.eye(self.m)
 
-    def F(self, z: ArrayLike) -> Array:
+    def F(self, z: ArrayLike, *args, **kwargs) -> Array:
         """Vector defining the linear term in the CLF objective (minimize 0.5 * u^T H u + F^T u)
 
         The default implementation is a zero vector, but this can be overridden

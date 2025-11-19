@@ -75,9 +75,10 @@ class CBFConfig(ABC):
         control_relaxation_penalty (float, optional): Penalty on the control constraint slack variables in the
             relaxed QP. Defaults to 1e5. Note: only applies if relax_qp is True.
         solver_tol (float, optional): Tolerance for the QP solver. Defaults to 1e-3.
-        init_args (tuple, optional): If your barrier function relies on additional arguments other than just the state,
-            include an initial seed for these arguments here. This is to help test the output of the barrier function.
-            Defaults to ().
+        init_args (tuple, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
+            args other than just the state, include an initial seed for these args here. Defaults to None.
+        init_kwargs (dict, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
+            kwargs other than just the state, include an initial seed for these kwargs here. Defaults to None.
     """
 
     def __init__(
@@ -90,7 +91,8 @@ class CBFConfig(ABC):
         cbf_relaxation_penalty: float = 1e3,
         control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
-        init_args: tuple = (),
+        init_args: Optional[tuple] = None,
+        init_kwargs: Optional[dict] = None,
     ):
         if not (isinstance(n, int) and n > 0):
             raise ValueError(f"n must be a positive integer. Got: {n}")
@@ -123,9 +125,17 @@ class CBFConfig(ABC):
                 + " Solution will likely be poor."
             )
 
-        if not isinstance(init_args, tuple):
+        if init_args is None:
+            init_args = ()
+        elif not isinstance(init_args, tuple):
             raise ValueError(f"init_args must be a tuple. Got: {init_args}")
         self.init_args = init_args
+
+        if init_kwargs is None:
+            init_kwargs = {}
+        elif not isinstance(init_kwargs, dict):
+            raise ValueError(f"init_kwargs must be a dict. Got: {init_kwargs}")
+        self.init_kwargs = init_kwargs
 
         if not (
             isinstance(control_relaxation_penalty, (int, float))
@@ -166,8 +176,8 @@ class CBFConfig(ABC):
         # Test if the methods are provided and verify their output dimension
         z_test = jnp.ones(self.n)
         u_test = jnp.ones(self.m)
-        f_test = self.f(z_test)
-        g_test = self.g(z_test)
+        f_test = self.f(z_test, *self.init_args, **self.init_kwargs)
+        g_test = self.g(z_test, *self.init_args, **self.init_kwargs)
         if f_test.shape != (self.n,):
             raise ValueError(
                 f"Invalid shape for f(z). Got {f_test.shape}, expected ({self.n},)"
@@ -177,13 +187,10 @@ class CBFConfig(ABC):
                 f"Invalid shape for g(z). Got {g_test.shape}, expected ({self.n}, {self.m})"
             )
         try:
-            h1_test = self.h_1(z_test, *self.init_args)
-            h2_test = self.h_2(z_test, *self.init_args)
+            h1_test = self.h_1(z_test, *self.init_args, **self.init_kwargs)
+            h2_test = self.h_2(z_test, *self.init_args, **self.init_kwargs)
         except TypeError as e:
-            raise ValueError(
-                "Cannot test the barrier function; likely missing additional arguments.\n"
-                + "Please provide an initial seed for these args in the config's init_args input"
-            ) from e
+            raise ValueError("Cannot test the barrier function") from e
         if h1_test.ndim != 1 or h2_test.ndim != 1:
             raise ValueError("Barrier function(s) must be 1D arrays")
         self.num_rd1_cbf = h1_test.shape[0]
@@ -195,8 +202,8 @@ class CBFConfig(ABC):
                 + "\nYou can implement this via the h_1 and/or h_2 methods in your config class"
             )
         h_test = jnp.concatenate([h1_test, h2_test])
-        alpha_test = self.alpha(h_test)
-        alpha_2_test = self.alpha_2(h2_test)
+        alpha_test = self.alpha(h_test, *self.init_args, **self.init_kwargs)
+        alpha_2_test = self.alpha_2(h2_test, *self.init_args, **self.init_kwargs)
         if alpha_test.shape != (self.num_cbf,):
             raise ValueError(
                 f"Invalid shape for alpha(h(z)): {alpha_test.shape}. Expected ({self.num_cbf},)"
@@ -207,15 +214,12 @@ class CBFConfig(ABC):
                 f"Invalid shape for alpha_2(h_2(z)): {alpha_2_test.shape}. Expected ({self.num_rd2_cbf},)"
                 + "\nCheck that the output of the alpha_2() function matches the number of RD2 CBFs"
             )
-        self._check_class_kappa(self.alpha, self.num_cbf)
-        self._check_class_kappa(self.alpha_2, self.num_rd2_cbf)
+        self._check_class_kappa(self.alpha, self.num_cbf, *self.init_args, **self.init_kwargs)
+        self._check_class_kappa(self.alpha_2, self.num_rd2_cbf, *self.init_args, **self.init_kwargs)
         try:
-            P_test = self.P(z_test, u_test, *self.init_args)
+            P_test = self.P(z_test, u_test, *self.init_args, **self.init_kwargs)
         except TypeError as e:
-            raise ValueError(
-                "Cannot test the P matrix; likely missing additional arguments.\n"
-                + "Please provide an initial seed for these args in the config's init_args input"
-            ) from e
+            raise ValueError("Cannot test the P matrix") from e
         if P_test.shape != (self.m, self.m):
             raise ValueError(
                 f"Invalid shape for P(z). Got {P_test.shape}, expected ({self.m}, {self.m})"
@@ -245,7 +249,7 @@ class CBFConfig(ABC):
     ## Control Affine Dynamics ##
 
     @abstractmethod
-    def f(self, z: ArrayLike) -> Array:
+    def f(self, z: ArrayLike, *args, **kwargs) -> Array:
         """The uncontrolled dynamics function. Possibly nonlinear, and locally Lipschitz
 
         i.e. the function f, such that z_dot = f(z) + g(z) u
@@ -259,7 +263,7 @@ class CBFConfig(ABC):
         pass
 
     @abstractmethod
-    def g(self, z: ArrayLike) -> Array:
+    def g(self, z: ArrayLike, *args, **kwargs) -> Array:
         """The control affine dynamics function. Locally Lipschitz.
 
         i.e. the function g, such that z_dot = f(z) + g(z) u
@@ -274,7 +278,7 @@ class CBFConfig(ABC):
 
     ## Barriers ##
 
-    def h_1(self, z: ArrayLike, *h_args) -> Array:
+    def h_1(self, z: ArrayLike, *args, **kwargs) -> Array:
         """Relative-degree-1 barrier function(s).
 
         A (zeroing) CBF is a continuously-differentiable function h, such that for any state z in the interior of
@@ -289,15 +293,13 @@ class CBFConfig(ABC):
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function. Note: If using additional args with your
-                barrier, these must be a static shape/type, or else this will trigger a recompilation in Jax.
 
         Returns:
             Array: Barrier function(s), shape (num_rd1_barr,)
         """
         return jnp.array([])
 
-    def h_2(self, z: ArrayLike, *h_args) -> Array:
+    def h_2(self, z: ArrayLike, *args, **kwargs) -> Array:
         """Relative-degree-2 (high-order) barrier function(s).
 
         A (zeroing) CBF is a continuously-differentiable function h, such that for any state z in the interior of
@@ -313,8 +315,6 @@ class CBFConfig(ABC):
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function. Note: If using additional args with your
-                barrier, these must be a static shape/type, or else this will trigger a recompilation in Jax.
 
         Returns:
             Array: Barrier function(s), shape (num_rd2_barr,)
@@ -323,7 +323,7 @@ class CBFConfig(ABC):
 
     ## Additional tuning functions ##
 
-    def alpha(self, h: ArrayLike) -> Array:
+    def alpha(self, h: ArrayLike, *args, **kwargs) -> Array:
         """A class Kappa function, dictating the "gain" of the barrier function(s)
 
         For reference, a class Kappa function is a monotonically increasing function which passes through the origin.
@@ -339,7 +339,7 @@ class CBFConfig(ABC):
         """
         return h
 
-    def alpha_2(self, h_2: ArrayLike) -> Array:
+    def alpha_2(self, h_2: ArrayLike, *args, **kwargs) -> Array:
         """A second class Kappa function which dictactes the "gain" associated with the relative-degree-2
         barrier functions
 
@@ -358,7 +358,7 @@ class CBFConfig(ABC):
 
     # Objective function tuning
 
-    def P(self, z: Array, u_des: Array, *h_args) -> Array:
+    def P(self, z: Array, u_des: Array, *args, **kwargs) -> Array:
         """Quadratic term in the CBF QP objective (minimize 0.5 * x^T P x + q^T x)
 
         This defaults to 2 * I, which is the value of P when minimizing the standard CBF objective,
@@ -369,14 +369,13 @@ class CBFConfig(ABC):
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: P matrix, shape (m, m)
         """
         return 2 * jnp.eye(self.m)
 
-    def q(self, z: Array, u_des: Array, *h_args) -> Array:
+    def q(self, z: Array, u_des: Array, *args, **kwargs) -> Array:
         """Linear term in the CBF QP objective (minimize 0.5 * x^T P x + q^T x)
 
         This defaults to -2 * u_des, which is the value of q when minimizing the standard CBF objective,
@@ -387,7 +386,6 @@ class CBFConfig(ABC):
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: q vector, shape (m,)
@@ -397,7 +395,7 @@ class CBFConfig(ABC):
     ## Helper functions ##
 
     def _check_class_kappa(
-        self, func: Callable[[ArrayLike], ArrayLike], dim: int
+        self, func: Callable[[ArrayLike], ArrayLike], dim: int, *args, **kwargs
     ) -> None:
         """Checks that the provided function is in class Kappa
 
@@ -406,15 +404,19 @@ class CBFConfig(ABC):
             dim (int): Expected dimension of the output
         """
         assert isinstance(func, Callable)
+
+        def func_wrapper(x):
+            return func(x, *args, **kwargs)
+
         try:
             # Check that func(0) == 0
-            assert jnp.allclose(func(jnp.zeros(dim)), 0.0)
+            assert jnp.allclose(func_wrapper(jnp.zeros(dim)), 0.0)
             # Check that func is monotonically increasing
             n_test = 100
             test_points = jnp.repeat(
                 jnp.linspace(-1e6, 1e6, n_test).reshape(n_test, 1), dim, axis=1
             )
-            a = jax.vmap(func, in_axes=0)(test_points)
+            a = jax.vmap(func_wrapper, in_axes=0)(test_points)
             assert jnp.all(a[:-1, :] < a[1:, :])
         except AssertionError as e:
             raise ValueError(

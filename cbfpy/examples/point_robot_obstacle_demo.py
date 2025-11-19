@@ -38,17 +38,17 @@ class PointRobotObstacleConfig(CBFConfig):
             init_args=(init_z_obs,),
         )
 
-    def f(self, z):
+    def f(self, z, *args, **kwargs):
         A = jnp.block(
             [[jnp.zeros((3, 3)), jnp.eye(3)], [jnp.zeros((3, 3)), jnp.zeros((3, 3))]]
         )
         return A @ z
 
-    def g(self, z):
+    def g(self, z, *args, **kwargs):
         B = jnp.block([[jnp.zeros((3, 3))], [jnp.eye(3) / self.mass]])
         return B
 
-    def h_1(self, z, z_obs):
+    def h_1(self, z, z_obs, **kwargs):
         # Distance between >= obstacle radius + robot radius + deceleration distance
         pos_robot = z[:3]
         vel_robot = z[3:]
@@ -69,13 +69,13 @@ class PointRobotObstacleConfig(CBFConfig):
             ]
         )
 
-    def h_2(self, z, z_obs):
+    def h_2(self, z, z_obs, **kwargs):
         # Stay inside the safe set (a box)
         pos_max = jnp.array([1.0, 1.0, 1.0])
         pos_min = jnp.array([-1.0, -1.0, -1.0])
         return jnp.concatenate([pos_max - z[:3], z[:3] - pos_min])
 
-    def alpha(self, h):
+    def alpha(self, h, *args, **kwargs):
         return 3 * h
 
 

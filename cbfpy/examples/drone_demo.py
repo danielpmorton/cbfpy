@@ -43,15 +43,15 @@ class DroneConfig(CBFConfig):
             cbf_relaxation_penalty=1e6,
         )
 
-    def f(self, z):
+    def f(self, z, *args, **kwargs):
         # Assume we are directly controlling the robot's velocity
         return jnp.zeros(self.n)
 
-    def g(self, z):
+    def g(self, z, *args, **kwargs):
         # Assume we are directly controlling the robot's velocity
         return jnp.block([[jnp.eye(3)], [jnp.zeros((3, 3))]])
 
-    def h_1(self, z, z_obs):
+    def h_1(self, z, z_obs, **kwargs):
         obstacle_radius = 0.25
         robot_radius = 0.25
         padding = 0.1
@@ -78,7 +78,7 @@ class DroneConfig(CBFConfig):
         )
         return jnp.concatenate([h_obstacle_avoidance, h_box_containment])
 
-    def alpha(self, h):
+    def alpha(self, h, *args, **kwargs):
         return jnp.array([3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]) * h
 
 
