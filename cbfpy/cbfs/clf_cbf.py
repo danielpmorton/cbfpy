@@ -258,7 +258,9 @@ class CLFCBF:
 
         return jax.jvp(_h, (z,), (self.f(z, *args, **kwargs),))
 
-    def Lgh(self, z: ArrayLike, *args, **kwargs) -> Array:  # pylint: disable=invalid-name
+    def Lgh(
+        self, z: ArrayLike, *args, **kwargs
+    ) -> Array:  # pylint: disable=invalid-name
         """Lie derivative of the barrier function(s) wrt the control dynamics `g(z)u`
 
         Args:
@@ -301,7 +303,9 @@ class CLFCBF:
         # Merge the relative-degree-1 and relative-degree-2 CLFs
         return jnp.concatenate([self.V_1(z, z_des, *args, **kwargs), V2_rd1])
 
-    def V_and_LfV(self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs) -> Tuple[Array, Array]:
+    def V_and_LfV(
+        self, z: ArrayLike, z_des: ArrayLike, *args, **kwargs
+    ) -> Tuple[Array, Array]:
         """Lie derivative of the CLF wrt the autonomous dynamics `f(z)`
 
         The evaluation of the CLF is also returned "for free", a byproduct of the jacobian-vector-product
@@ -391,7 +395,10 @@ class CLFCBF:
         """
         G = jnp.block(
             [
-                [self.LgV(z, z_des, *args, **kwargs), -1.0 * jnp.ones((self.num_clf, 1))],
+                [
+                    self.LgV(z, z_des, *args, **kwargs),
+                    -1.0 * jnp.ones((self.num_clf, 1)),
+                ],
                 [-self.Lgh(z, *args, **kwargs), jnp.zeros((self.num_cbf, 1))],
             ]
         )
