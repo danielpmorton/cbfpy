@@ -126,18 +126,15 @@ class CBF:
             config.q,
             config.solver_tol,
         )
-        instance._validate_instance(*config.init_args)
+        instance._validate_instance(*config.init_args, **config.init_kwargs)
         return instance
 
-    def _validate_instance(self, *h_args) -> None:
-        """Checks that the CBF is valid; warns the user if not
+    def _validate_instance(self, *args, **kwargs) -> None:
+        """Checks that the CBF is valid; warns the user if not"""
 
-        Args:
-            *h_args: Optional additional arguments for the barrier function.
-        """
         try:
             # TODO: Decide if this should be checked on a row-by-row basis or via the full matrix
-            test_lgh = self.Lgh(jnp.ones(self.n), *h_args)
+            test_lgh = self.Lgh(jnp.ones(self.n), *args, **kwargs)
             if jnp.allclose(test_lgh, 0):
                 print_warning(
                     "Lgh is zero. Consider increasing the relative degree or modifying the barrier function."
@@ -149,18 +146,17 @@ class CBF:
             )
 
     @jax.jit
-    def safety_filter(self, z: Array, u_des: Array, *h_args) -> Array:
+    def safety_filter(self, z: Array, u_des: Array, *args, **kwargs) -> Array:
         """Apply the CBF safety filter to a nominal control
 
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Safe control input, shape (m,)
         """
-        P, q, A, b, G, h = self.qp_data(z, u_des, *h_args)
+        P, q, A, b, G, h = self.qp_data(z, u_des, *args, **kwargs)
         if self.relax_qp:
             x_qp = qpax.solve_qp_elastic_primal(
                 P,
@@ -182,12 +178,11 @@ class CBF:
             )
         return x_qp[: self.m]
 
-    def h(self, z: ArrayLike, *h_args) -> Array:
+    def h(self, z: ArrayLike, *args, **kwargs) -> Array:
         """Barrier function(s)
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Barrier function evaluation, shape (num_barr,)
@@ -195,16 +190,16 @@ class CBF:
 
         # Take any relative-degree-2 barrier functions and convert them to relative-degree-1
         def _h_2(state):
-            return self.h_2(state, *h_args)
+            return self.h_2(state, *args, **kwargs)
 
-        h_2, dh_2_dt = jax.jvp(_h_2, (z,), (self.f(z),))
-        h_2_as_rd1 = dh_2_dt + self.alpha_2(h_2)
+        h_2, dh_2_dt = jax.jvp(_h_2, (z,), (self.f(z, *args, **kwargs),))
+        h_2_as_rd1 = dh_2_dt + self.alpha_2(h_2, *args, **kwargs)
 
         # Merge the relative-degree-1 and relative-degree-2 barrier functions
-        return jnp.concatenate([self.h_1(z, *h_args), h_2_as_rd1])
+        return jnp.concatenate([self.h_1(z, *args, **kwargs), h_2_as_rd1])
 
     def h_and_Lfh(  # pylint: disable=invalid-name
-        self, z: ArrayLike, *h_args
+        self, z: ArrayLike, *args, **kwargs
     ) -> Tuple[Array, Array]:
         """Lie derivative of the barrier function(s) wrt the autonomous dynamics `f(z)`
 
@@ -212,7 +207,6 @@ class CBF:
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             h (Array): Barrier function evaluation, shape (num_barr,)
@@ -222,16 +216,15 @@ class CBF:
         # with the bonus benefit of also evaluating the barrier function
 
         def _h(state):
-            return self.h(state, *h_args)
+            return self.h(state, *args, **kwargs)
 
-        return jax.jvp(_h, (z,), (self.f(z),))
+        return jax.jvp(_h, (z,), (self.f(z, *args, **kwargs),))
 
-    def Lgh(self, z: ArrayLike, *h_args) -> Array:  # pylint: disable=invalid-name
+    def Lgh(self, z: ArrayLike, *args, **kwargs) -> Array:  # pylint: disable=invalid-name
         """Lie derivative of the barrier function(s) wrt the control dynamics `g(z)u`
 
         Args:
             z (ArrayLike): State, shape (n,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: Lgh, shape (num_barr, m)
@@ -239,47 +232,45 @@ class CBF:
         # Note: the below code is just a more efficient way of stating `Lgh = jax.jacobian(self.h)(z) @ self.g(z)`
 
         def _h(state):
-            return self.h(state, *h_args)
+            return self.h(state, *args, **kwargs)
 
         def _jvp(g_column):
             return jax.jvp(_h, (z,), (g_column,))[1]
 
-        return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z))
+        return jax.vmap(_jvp, in_axes=1, out_axes=1)(self.g(z, *args, **kwargs))
 
     ## QP Matrices ##
 
     def P_qp(  # pylint: disable=invalid-name
-        self, z: Array, u_des: Array, *h_args
+        self, z: Array, u_des: Array, *args, **kwargs
     ) -> Array:
         """Quadratic term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)
 
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: P matrix, shape (m, m)
         """
         # This is user-modifiable in the config, but defaults to 2 * I for the standard min-norm CBF objective
-        return self.P_config(z, u_des, *h_args)
+        return self.P_config(z, u_des, *args, **kwargs)
 
-    def q_qp(self, z: Array, u_des: Array, *h_args) -> Array:
+    def q_qp(self, z: Array, u_des: Array, *args, **kwargs) -> Array:
         """Linear term in the QP objective (`minimize 0.5 * x^T P x + q^T x`)
 
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: q vector, shape (m,)
         """
         # This is user-modifiable in the config, but defaults to -2 * u_des for the standard min-norm CBF objective
-        return self.q_config(z, u_des, *h_args)
+        return self.q_config(z, u_des, *args, **kwargs)
 
     def G_qp(  # pylint: disable=invalid-name
-        self, z: Array, u_des: Array, *h_args
+        self, z: Array, u_des: Array, *args, **kwargs
     ) -> Array:
         """Inequality constraint matrix for the QP (`Gx <= h`)
 
@@ -291,18 +282,17 @@ class CBF:
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: G matrix, shape (num_constraints, m)
         """
-        G = -self.Lgh(z, *h_args)
+        G = -self.Lgh(z, *args, **kwargs)
         if self.control_constrained:
             return jnp.block([[G], [jnp.eye(self.m)], [-jnp.eye(self.m)]])
         else:
             return G
 
-    def h_qp(self, z: Array, u_des: Array, *h_args) -> Array:
+    def h_qp(self, z: Array, u_des: Array, *args, **kwargs) -> Array:
         """Upper bound on constraints for the QP (`Gx <= h`)
 
         Note:
@@ -313,13 +303,12 @@ class CBF:
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             Array: h vector, shape (num_constraints,)
         """
-        hz, lfh = self.h_and_Lfh(z, *h_args)
-        h = self.alpha(hz) + lfh
+        hz, lfh = self.h_and_Lfh(z, *args, **kwargs)
+        h = self.alpha(hz, *args, **kwargs) + lfh
         if self.control_constrained:
             return jnp.concatenate(
                 [h, jnp.asarray(self.u_max), -jnp.asarray(self.u_min)]
@@ -328,7 +317,7 @@ class CBF:
             return h
 
     def qp_data(
-        self, z: Array, u_des: Array, *h_args
+        self, z: Array, u_des: Array, *args, **kwargs
     ) -> Tuple[Array, Array, Array, Array, Array, Array]:
         """Constructs the QP matrices based on the current state and desired control
 
@@ -349,7 +338,6 @@ class CBF:
         Args:
             z (Array): State, shape (n,)
             u_des (Array): Desired control input, shape (m,)
-            *h_args: Optional additional arguments for the barrier function.
 
         Returns:
             P (Array): Quadratic term in the QP objective, shape (m, m)
@@ -360,10 +348,10 @@ class CBF:
             h (Array): Upper bound on constraints, shape (num_constraints,)
         """
         return (
-            self.P_qp(z, u_des, *h_args),
-            self.q_qp(z, u_des, *h_args),
+            self.P_qp(z, u_des, *args, **kwargs),
+            self.q_qp(z, u_des, *args, **kwargs),
             jnp.zeros((0, self.m)),  # Equality matrix (not used for CBF)
             jnp.zeros(0),  # Equality vector (not used for CBF)
-            self.G_qp(z, u_des, *h_args),
-            self.h_qp(z, u_des, *h_args),
+            self.G_qp(z, u_des, *args, **kwargs),
+            self.h_qp(z, u_des, *args, **kwargs),
         )
