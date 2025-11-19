@@ -127,7 +127,7 @@ class CLFCBFConfig(CBFConfig):
             print("WARNING: Control constraints have a lower penalty than the CLFs")
 
         # Check on CLF dimension
-        z_test = jnp.ones(self.n)
+        z_test = np.ones(self.n)
         v1_test = self.V_1(z_test, z_test, *self.init_args, **self.init_kwargs)
         v2_test = self.V_2(z_test, z_test, *self.init_args, **self.init_kwargs)
         if v1_test.ndim != 1 or v2_test.ndim != 1:
@@ -140,7 +140,7 @@ class CLFCBFConfig(CBFConfig):
                 "No Lyanpunov functions provided."
                 + "\nYou can implement this via the V_1 and/or V_2 methods in your config class"
             )
-        v_test = jnp.concatenate([v1_test, v2_test])
+        v_test = np.concatenate([v1_test, v2_test])
         gamma_test = self.gamma(v_test, *self.init_args, **self.init_kwargs)
         gamma_2_test = self.gamma_2(v2_test, *self.init_args, **self.init_kwargs)
         if gamma_test.shape != (self.num_clf,):

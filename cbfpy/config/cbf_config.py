@@ -173,8 +173,8 @@ class CBFConfig(ABC):
             print("WARNING: Control constraints have a lower penalty than the CBFs.")
 
         # Test if the methods are provided and verify their output dimension
-        z_test = jnp.ones(self.n)
-        u_test = jnp.ones(self.m)
+        z_test = np.ones(self.n)
+        u_test = np.ones(self.m)
         f_test = self.f(z_test, *self.init_args, **self.init_kwargs)
         g_test = self.g(z_test, *self.init_args, **self.init_kwargs)
         if f_test.shape != (self.n,):
@@ -200,7 +200,7 @@ class CBFConfig(ABC):
                 "No barrier functions provided."
                 + "\nYou can implement this via the h_1 and/or h_2 methods in your config class"
             )
-        h_test = jnp.concatenate([h1_test, h2_test])
+        h_test = np.concatenate([h1_test, h2_test])
         alpha_test = self.alpha(h_test, *self.init_args, **self.init_kwargs)
         alpha_2_test = self.alpha_2(h2_test, *self.init_args, **self.init_kwargs)
         if alpha_test.shape != (self.num_cbf,):
@@ -413,14 +413,14 @@ class CBFConfig(ABC):
 
         try:
             # Check that func(0) == 0
-            assert jnp.allclose(func_wrapper(jnp.zeros(dim)), 0.0)
+            assert np.allclose(func_wrapper(np.zeros(dim)), 0.0)
             # Check that func is monotonically increasing
             n_test = 100
-            test_points = jnp.repeat(
-                jnp.linspace(-1e6, 1e6, n_test).reshape(n_test, 1), dim, axis=1
+            test_points = np.repeat(
+                np.linspace(-1e6, 1e6, n_test).reshape(n_test, 1), dim, axis=1
             )
             a = jax.vmap(func_wrapper, in_axes=0)(test_points)
-            assert jnp.all(a[:-1, :] < a[1:, :])
+            assert np.all(a[:-1, :] < a[1:, :])
         except AssertionError as e:
             raise ValueError(
                 f"{func.__name__} does not appear to be a class Kappa function"
