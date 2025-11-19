@@ -38,7 +38,6 @@ is infeasible.
 
 from typing import Optional, Callable
 from abc import ABC, abstractmethod
-import warnings
 
 import numpy as np
 import jax
@@ -214,8 +213,12 @@ class CBFConfig(ABC):
                 f"Invalid shape for alpha_2(h_2(z)): {alpha_2_test.shape}. Expected ({self.num_rd2_cbf},)"
                 + "\nCheck that the output of the alpha_2() function matches the number of RD2 CBFs"
             )
-        self._check_class_kappa(self.alpha, self.num_cbf, *self.init_args, **self.init_kwargs)
-        self._check_class_kappa(self.alpha_2, self.num_rd2_cbf, *self.init_args, **self.init_kwargs)
+        self._check_class_kappa(
+            self.alpha, self.num_cbf, *self.init_args, **self.init_kwargs
+        )
+        self._check_class_kappa(
+            self.alpha_2, self.num_rd2_cbf, *self.init_args, **self.init_kwargs
+        )
         try:
             P_test = self.P(z_test, u_test, *self.init_args, **self.init_kwargs)
         except TypeError as e:

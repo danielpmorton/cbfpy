@@ -93,7 +93,7 @@ class CLFCBFConfig(CBFConfig):
         control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
         init_args: Optional[tuple] = None,
-        init_kwargs: Optional[dict] = None
+        init_kwargs: Optional[dict] = None,
     ):
         super().__init__(
             n,
@@ -153,8 +153,12 @@ class CLFCBFConfig(CBFConfig):
                 f"Invalid shape for gamma_2(V_2(z)): {gamma_2_test.shape}. Expected ({self.num_rd2_clf},)"
                 + "\nCheck that the output of the gamma_2() function matches the number of RD2 CLFs"
             )
-        self._check_class_kappa(self.gamma, self.num_clf, *self.init_args, **self.init_kwargs)
-        self._check_class_kappa(self.gamma_2, self.num_rd2_clf, *self.init_args, **self.init_kwargs)
+        self._check_class_kappa(
+            self.gamma, self.num_clf, *self.init_args, **self.init_kwargs
+        )
+        self._check_class_kappa(
+            self.gamma_2, self.num_rd2_clf, *self.init_args, **self.init_kwargs
+        )
         H_test = self.H(z_test, *self.init_args, **self.init_kwargs)
         if H_test.shape != (self.m, self.m):
             raise ValueError(
