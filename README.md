@@ -15,12 +15,13 @@ For API reference, see the following [documentation](https://danielpmorton.githu
 If you use CBFpy in your research, please cite the following [paper](https://arxiv.org/abs/2503.06736):
 
 ```
-@article{morton2025oscbf,
-  author = {Morton, Daniel and Pavone, Marco},
-  title = {Safe, Task-Consistent Manipulation with Operational Space Control Barrier Functions},
-  year = {2025},
-  journal = {arXiv preprint arXiv:2503.06736},
-  note = {Accepted to IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, 2025},
+@inproceedings{morton2025oscbf,
+  author={Morton, Daniel and Pavone, Marco},
+  booktitle={2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={Safe, Task-Consistent Manipulation with Operational Space Control Barrier Functions}, 
+  year={2025},
+  pages={187-194},
+  doi={10.1109/IROS60139.2025.11246389}
 }
 ```
 
