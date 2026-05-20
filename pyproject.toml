@@ -21,8 +21,8 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://danielpmorton.github.io/cbfpy/"
-Repository = "https://github.com/danielpmorton/cbfpy/"
+Documentation = "https://stanfordasl.github.io/cbfpy/"
+Repository = "https://github.com/StanfordASL/cbfpy/"
 
 [project.optional-dependencies]
 examples = [
