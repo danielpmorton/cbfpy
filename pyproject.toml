@@ -16,7 +16,6 @@ classifiers = [
 dependencies = [
     "numpy",
     "jax",  # 0.4.30 recommended for best CPU performance
-    "jaxlib",  # 0.4.30 recommended for best CPU performance
     "qpax",
 ]
 
