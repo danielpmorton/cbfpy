@@ -32,18 +32,8 @@ examples = [
     "wheel",
     "matplotlib",
 ]
-dev = ["mkdocs-material", "mkdocstrings[python]", "pylint", "black"]
-all = [
-    "pybullet>=3.2.7",
-    "pygame",
-    # "gym_pybullet_drones @ git+https://github.com/danielpmorton/gym-pybullet-drones.git",
-    "wheel",
-    "matplotlib",
-    "mkdocs-material",
-    "mkdocstrings[python]",
-    "pylint",
-    "black",
-]
+dev = ["mkdocs-material", "mkdocstrings[python]", "ruff"]
+all = ["cbfpy[examples,dev]"]
 
 [tool.setuptools.packages.find]
 exclude = ["artifacts", "images"]
