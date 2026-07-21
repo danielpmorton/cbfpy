@@ -15,6 +15,14 @@ The safety constraints are set as an upper and lower bound on the position of th
 This is a relative-degree-2 system, so we use the RD2 version of the CBF constraints.
 """
 
+import os
+
+os.environ["XLA_FLAGS"] = "--xla_cpu_multi_thread_eigen=false"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["JAX_ENABLE_X64"] = "True"
+os.environ["JAX_PLATFORMS"] = "cpu"
+
+
 import jax
 from jax import Array
 import jax.numpy as jnp

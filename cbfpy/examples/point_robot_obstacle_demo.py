@@ -14,6 +14,14 @@ RD2, since we have a positional barrier with acceleration inputs. Avoiding the o
 because this is based on the relative velocity between the two objects.
 """
 
+import os
+
+os.environ["XLA_FLAGS"] = "--xla_cpu_multi_thread_eigen=false"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["JAX_ENABLE_X64"] = "True"
+os.environ["JAX_PLATFORMS"] = "cpu"
+
+
 import time
 import jax
 from jax import Array

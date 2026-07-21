@@ -9,6 +9,14 @@ These test cases can also be used to check that modifications to the CBF impleme
 do not significantly degrade performance
 """
 
+import os
+
+os.environ["XLA_FLAGS"] = "--xla_cpu_multi_thread_eigen=false"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["JAX_ENABLE_X64"] = "True"
+os.environ["JAX_PLATFORMS"] = "cpu"
+
+
 import unittest
 from typing import Callable
 import time

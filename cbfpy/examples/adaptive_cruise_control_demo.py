@@ -20,6 +20,14 @@ Reference:
 Some parameters are based on Jason Choi's https://github.com/HybridRobotics/CBF-CLF-Helper
 """
 
+import os
+
+os.environ["XLA_FLAGS"] = "--xla_cpu_multi_thread_eigen=false"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["JAX_ENABLE_X64"] = "True"
+os.environ["JAX_PLATFORMS"] = "cpu"
+
+
 from jax import Array
 import jax.numpy as jnp
 from jax.typing import ArrayLike

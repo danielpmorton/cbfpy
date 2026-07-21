@@ -19,6 +19,14 @@ See https://danielpmorton.github.io/drone_fencing/ for a demo of this on real ha
 obstacle avoidance" demo in CBFpy for a simplified version of this demo
 """
 
+import os
+
+os.environ["XLA_FLAGS"] = "--xla_cpu_multi_thread_eigen=false"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["JAX_ENABLE_X64"] = "True"
+os.environ["JAX_PLATFORMS"] = "cpu"
+
+
 import time
 import jax
 import jax.numpy as jnp
