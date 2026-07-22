@@ -17,6 +17,7 @@ dependencies = [
     "numpy",
     "jax",  # 0.4.30 recommended for best CPU performance
     "qpax",
+    "packaging",
 ]
 
 [project.urls]

@@ -48,6 +48,17 @@ The `[examples]` tag installs all of the required packages for development and r
 
 If you are working on Apple silicon and have issues installing Jax, the following threads may be useful: [[1]](https://stackoverflow.com/questions/68327863/importing-jax-fails-on-mac-with-m1-chip), [[2]](https://github.com/jax-ml/jax/issues/5501#issuecomment-955590288)
 
+## Performance tips
+
+As with [`frax`](https://github.com/StanfordASL/frax), I have a few tips for maximizing performance:
+
+- For best performance on a single, non-batched evaluation, use CPU rather than GPU/TPU. To do so, set `JAX_PLATFORMS="cpu"`
+- For best performance on CPU, use a version of JAX before `0.4.32`. I recommend `0.4.30`
+- For accurate QP solutions, I recommend enabling double precision with `JAX_ENABLE_X64=True`. **Note**: Previous versions of CBFpy forced double precision globally; we now leave this choice up to the user
+- On CPU, it's probably faster to run on a single thread (these problems are small, and dispatching work to multiple threads introduces more overhead than it is worth). To do so, set `XLA_FLAGS="--xla_cpu_multi_thread_eigen=false"` and `OPENBLAS_NUM_THREADS=1`
+
+On import, CBFpy will autodetect if you are running on CPU, and warn if some of these options are not configured.
+
 ## Usage:
 
 #### Example: A point-mass robot in 1D with an applied force and a positional barrier
