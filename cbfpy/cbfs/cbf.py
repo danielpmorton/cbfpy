@@ -221,9 +221,7 @@ class CBF:
 
         return jax.jvp(_h, (z,), (self.f(z, *args, **kwargs),))
 
-    def Lgh(
-        self, z: ArrayLike, *args, **kwargs
-    ) -> Array:  # pylint: disable=invalid-name
+    def Lgh(self, z: ArrayLike, *args, **kwargs) -> Array:  # pylint: disable=invalid-name
         """Lie derivative of the barrier function(s) wrt the control dynamics `g(z)u`
 
         Args:

@@ -12,7 +12,6 @@ from cbfpy.config.cbf_config import CBFConfig
 from cbfpy.config.clf_cbf_config import CLFCBFConfig
 
 
-
 def check_env_vars():
     """
     If CBFpy code is running on a single CPU, for best performance, there are

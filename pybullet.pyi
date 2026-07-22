@@ -325,7 +325,7 @@ def addUserDebugLine(
     replaceItemUniqueId: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Add a user debug draw line with lineFrom[3], lineTo[3], lineColorRGB[3], lineWidth, lifeTime. A lifeTime of 0 means permanent until removed. Returns a unique id for the user debug item."""
     pass
@@ -337,7 +337,7 @@ def addUserDebugParameter(
     startValue: float,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Add a user debug parameter, such as a slider, that can be controlled using a GUI."""
     pass
@@ -367,7 +367,7 @@ def addUserDebugText(
     replaceItemUniqueId: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Add a user debug draw line with text, textPosition[3], textSize and lifeTime in seconds A lifeTime of 0 means permanent until removed. Returns a unique id for the user debug item."""
     pass
@@ -380,7 +380,7 @@ def applyExternalForce(
     flags: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """for objectUniqueId, linkIndex (-1 for base/root link), apply a force [x,y,z] at the a position [x,y,z], flag to select FORCE_IN_LINK_FRAME or WORLD_FRAME coordinates"""
     pass
@@ -393,7 +393,7 @@ def applyExternalTorque(
     flags: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """for objectUniqueId, linkIndex (-1 for base/root link), apply a force [x,y,z] at the a position [x,y,z], flag to select FORCE_IN_LINK_FRAME or WORLD_FRAME coordinates"""
     pass
@@ -405,7 +405,7 @@ def calculateInverseDynamics(
     objAccelerations: list[float],
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Given an object id, joint positions, joint velocities and joint accelerations, compute the joint forces using Inverse Dynamics"""
     pass
@@ -426,7 +426,7 @@ def calculateInverseKinematics(
     residualThreshold: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Inverse Kinematics bindings: Given an object id, current joint positions and target position for the end effector,compute the inverse kinematics and return the new joint state"""
     pass
@@ -447,7 +447,7 @@ def calculateInverseKinematics2(
     residualThreshold: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Inverse Kinematics bindings: Given an object id, current joint positions and target positions for the end effectors,compute the inverse kinematics and return the new joint state"""
     pass
@@ -506,7 +506,7 @@ def changeConstraint(
     erp: list[float],
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Change some parameters of an existing constraint, such as the child pivot or child frame orientation, using its unique id."""
     pass
@@ -537,7 +537,7 @@ def changeDynamics(
     jointLimitForce: float,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """change dynamics information such as mass, lateral friction coefficient."""
     pass
@@ -555,7 +555,7 @@ def changeVisualShape(
     specularColor: list[float],
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Change part of the visual shape information for one object."""
     pass
@@ -573,7 +573,7 @@ def computeProjectionMatrix(
     far: float,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute a camera projection matrix from screen left/right/bottom/top/near/far values"""
     pass
@@ -585,7 +585,7 @@ def computeProjectionMatrixFOV(
     farVal: float,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute a camera projection matrix from fov, aspect ratio, near, far values"""
     pass
@@ -596,7 +596,7 @@ def computeViewMatrix(
     cameraUpVector: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute a camera viewmatrix from camera eye,  target position and up vector"""
     pass
@@ -610,7 +610,7 @@ def computeViewMatrixFromYawPitchRoll(
     upAxisIndex: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute a camera viewmatrix from camera eye,  target position and up vector"""
     pass
@@ -625,7 +625,7 @@ def configureDebugVisualizer(
     rgbBackground: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """For the 3D OpenGL Visualizer, enable/disable GUI, shadows."""
     pass
@@ -660,7 +660,7 @@ def createCollisionShape(
     replaceHeightfieldIndex: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Create a collision shape. Returns a non-negative (int) unique id, if successfull, negative otherwise."""
     pass
@@ -682,7 +682,7 @@ def createConstraint(
     childFrameOrientation: list[float],
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Create a constraint between two bodies. Returns a (int) unique id, if successfull."""
     pass
@@ -710,7 +710,7 @@ def createMultiBody(
     batchPositions: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ) -> int:  # real signature unknown
     """Create a multi body. Returns a non-negative (int) unique id, if successfull, negative otherwise."""
     pass
@@ -722,7 +722,7 @@ def createSoftBodyAnchor(
     linkIndex: int,
     bodyFramePosition: list[float],
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Create an anchor (attachment) between a soft body and a rigid or multi body."""
     pass
@@ -746,7 +746,7 @@ def createVisualShape(
     replaceHeightfieldIndex: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Create a visual shape. Returns a non-negative (int) unique id, if successfull, negative otherwise."""
     pass
@@ -768,7 +768,7 @@ def enableJointForceTorqueSensor(
     enableSensor: int,
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Enable or disable a joint force/torque sensor measuring the joint reaction forces."""
     pass
@@ -780,7 +780,7 @@ def executePluginCommand(
     floatArgs: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Execute a command, implemented in a plugin."""
     pass
@@ -841,7 +841,7 @@ def getCameraImage(
     flags: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Render an image (given the pixel resolution width, height, camera viewMatrix , projectionMatrix, lightDirection, lightColor, lightDistance, shadow, lightAmbientCoeff, lightDiffuseCoeff, lightSpecularCoeff, and renderer), and return the 8-8-8bit RGB pixel data and floating point depth values"""
     pass
@@ -854,7 +854,7 @@ def getClosestPoints(
     linkIndexB: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute the closest points between two objects, if the distance is below a given threshold.Input is two objects unique ids and distance threshold."""
     pass
@@ -903,7 +903,7 @@ def getDifferenceQuaternion(
     quaternionEnd: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute the quaternion difference from two quaternions."""
     pass
@@ -943,7 +943,7 @@ def getJointStates(
     jointIndices: list[int],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Get the state (position, velocity etc) for multiple joints on a body."""
     pass
@@ -985,7 +985,7 @@ def getLinkStates(
     computeForwardKinematics: int = 0,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """same as getLinkState except it takes a list of linkIndices"""
     pass
@@ -1003,7 +1003,7 @@ def getMeshData(
     flags: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Get mesh data. Returns vertices etc from the mesh."""
     pass
@@ -1040,7 +1040,7 @@ def getOverlappingObjects(
     aabbMax: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Return all the objects that have overlap with a given axis-aligned bounding box volume (AABB).Input are two vectors defining the AABB in world space [min_x,min_y,min_z],[max_x,max_y,max_z]."""
     pass
@@ -1129,7 +1129,7 @@ def loadMJCF(
     globalScaling: float,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Load multibodies from an MJCF file."""
     pass
@@ -1146,7 +1146,7 @@ def loadSDF(
     globalScaling: float,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Load multibodies from an SDF file."""
     pass
@@ -1173,7 +1173,7 @@ def loadSoftBody(
     useSelfCollision: bool,
     repulsionStiffness: float,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Load a softbody from an obj file."""
     pass
@@ -1205,7 +1205,7 @@ def multiplyTransforms(
     orientationB: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Multiply two transform, provided as [position], [quaternion]."""
     pass
@@ -1224,7 +1224,7 @@ def rayTest(
     rayToPosition: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Cast a ray and return the first object hit, if any. Takes two arguments (from_position [x,y,z] and to_position [x,y,z] in Cartesian world coordinates"""
     pass
@@ -1240,7 +1240,7 @@ def rayTestBatch(
     fractionEpsilon: float,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Cast a batch of rays and return the result for each of the rays (first object hit, if any. or -1) Takes two required arguments (list of from_positions [x,y,z] and a list of to_positions [x,y,z] in Cartesian world coordinates) and one optional argument numThreads to specify the number of threads to use to compute the ray intersections for the batch. Specify 0 to let Bullet decide, 1 (default) for single core execution, 2 or more to select the number of threads to use."""
     pass
@@ -1304,7 +1304,7 @@ def resetBasePositionAndOrientation(
     ornObj: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Reset the world position and orientation of the base of the object instantaneously, not through physics simulation. (x,y,z) position vector and (x,y,z,w) quaternion orientation."""
     pass
@@ -1315,7 +1315,7 @@ def resetBaseVelocity(
     angularVelocity: list[float],
     physicsClientId: int,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Reset the linear and/or angular velocity of the base of the object  in world space coordinates. linearVelocity (x,y,z) and angularVelocity (x,y,z)."""
     pass
@@ -1427,7 +1427,7 @@ def setCollisionFilterGroupMask(
     collisionFilterMask: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set the collision filter group and the mask for a body."""
     pass
@@ -1440,7 +1440,7 @@ def setCollisionFilterPair(
     enableCollision: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Enable or disable collision detection between two object links.Input are two object unique ids and two link indices and an enumto enable or disable collisions."""
     pass
@@ -1451,7 +1451,7 @@ def setDebugObjectColor(
     objectDebugColorRGB: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Override the wireframe debug drawing color for a particular object unique id / link index.If you ommit the color, the custom color will be removed."""
     pass
@@ -1496,7 +1496,7 @@ def setJointMotorControl2(
     maxVelocity: float,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set a single joint motor control mode and desired target value. There is no immediate state change, stepSimulation will process the motors."""
     pass
@@ -1513,7 +1513,7 @@ def setJointMotorControlArray(
     maxVelocities: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set an array of motors control mode and desired target value. There is no immediate state change, stepSimulation will process the motors.This is similar to setJointMotorControl2, with jointIndices as a list, and optional targetPositions, targetVelocities, forces, kds and kps as listsUsing setJointMotorControlArray has the benefit of lower calling overhead."""
     pass
@@ -1530,7 +1530,7 @@ def setJointMotorControlMultiDof(
     maxVelocity: float,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set a single joint motor control mode and desired target value. There is no immediate state change, stepSimulation will process the motors.This method sets multi-degree-of-freedom motor such as the spherical joint motor."""
     pass
@@ -1547,7 +1547,7 @@ def setJointMotorControlMultiDofArray(
     maxVelocities: list[float],
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set control mode and desired target values for multiple motors. There is no immediate state change, stepSimulation will process the motors.This method sets multi-degree-of-freedom motor such as the spherical joint motor."""
     pass
@@ -1580,7 +1580,7 @@ def setPhysicsEngineParameter(
     warmStartingFactor: float,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set some internal physics engine parameter, such as cfm or erp etc."""
     pass
@@ -1614,7 +1614,7 @@ def setVRCameraState(
     trackObjectFlag: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Set properties of the VR Camera such as its root transform for teleporting or to track objects (camera inside a vehicle for example)."""
     pass
@@ -1632,7 +1632,7 @@ def startStateLogging(
     logFlags: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Start logging of state, such as robot base position, orientation, joint positions etc. Specify loggingType (STATE_LOGGING_MINITAUR, STATE_LOGGING_GENERIC_ROBOT, STATE_LOGGING_VR_CONTROLLERS, STATE_LOGGING_CONTACT_POINTS, etc), fileName, optional objectUniqueId, maxLogDof, bodyUniqueIdA, bodyUniqueIdB, linkIndexA, linkIndexB. Function returns int loggingUniqueId"""
     pass
@@ -1697,7 +1697,7 @@ def vhacd(
     convexhullApproximation: int,
     physicsClientId: int = 0,
     *args,
-    **kwargs
+    **kwargs,
 ):  # real signature unknown
     """Compute volume hierarchical convex decomposition of an OBJ file."""
     pass
