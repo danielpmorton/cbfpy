@@ -74,6 +74,8 @@ class CBFConfig(ABC):
         control_relaxation_penalty (float, optional): Penalty on the control constraint slack variables in the
             relaxed QP. Defaults to 1e5. Note: only applies if relax_qp is True.
         solver_tol (float, optional): Tolerance for the QP solver. Defaults to 1e-3.
+        solver_backend (str, optional): Solver backend for QPAX. Either 'explicit' or 'implicit'. Note: explicit is
+            recommended for CPU/float64; implicit is recommended for GPU/float32. Defaults to 'explicit'
         init_args (tuple, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
             args other than just the state, include an initial seed for these args here. Defaults to None.
         init_kwargs (dict, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
@@ -90,6 +92,7 @@ class CBFConfig(ABC):
         cbf_relaxation_penalty: float = 1e3,
         control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
+        solver_backend: str = "explicit",
         init_args: Optional[tuple] = None,
         init_kwargs: Optional[dict] = None,
     ):
@@ -123,6 +126,13 @@ class CBFConfig(ABC):
                 f"WARNING: solver tolerance is quite high ({self.solver_tol}). "
                 + " Solution will likely be poor."
             )
+
+        allowed_backends = ("explicit", "implicit", "e", "i")
+        if not isinstance(solver_backend, str) or solver_backend.lower() not in allowed_backends:
+            raise ValueError(f"solver_backend must be one of {allowed_backends}. Got: {solver_backend}")
+        # qpax denotes explicit/implicit backends as "e", "i"
+        to_short = {"explicit": "e", "implicit": "i", "e": "e", "i": "i"}
+        self.solver_backend = to_short[solver_backend.lower()]
 
         if init_args is None:
             init_args = ()

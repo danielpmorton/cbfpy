@@ -75,6 +75,8 @@ class CLFCBFConfig(CBFConfig):
         control_relaxation_penalty (float, optional): Penalty on the control constraint slack variables in the
             relaxed QP. Defaults to 1e5. Note: only applies if relax_qp is True.
         solver_tol (float, optional): Tolerance for the QP solver. Defaults to 1e-3.
+        solver_backend (str, optional): Solver backend for QPAX. Either 'explicit' or 'implicit'. Note: explicit is
+            recommended for CPU/float64; implicit is recommended for GPU/float32. Defaults to 'explicit'
         init_args (tuple, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
             args other than just the state, include an initial seed for these args here. Defaults to None.
         init_kwargs (dict, optional): If your barriers or dynamics rely on additional (non-differentiable, static shape)
@@ -92,6 +94,7 @@ class CLFCBFConfig(CBFConfig):
         clf_relaxation_penalty: float = 1e2,
         control_relaxation_penalty: float = 1e5,
         solver_tol: float = 1e-3,
+        solver_backend: str = "explicit",
         init_args: Optional[tuple] = None,
         init_kwargs: Optional[dict] = None,
     ):
@@ -104,6 +107,7 @@ class CLFCBFConfig(CBFConfig):
             cbf_relaxation_penalty,
             control_relaxation_penalty,
             solver_tol,
+            solver_backend,
             init_args,
             init_kwargs,
         )

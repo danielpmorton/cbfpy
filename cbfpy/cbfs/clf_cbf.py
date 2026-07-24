@@ -98,6 +98,7 @@ class CLFCBF:
         H: Callable[[ArrayLike], Array],
         F: Callable[[ArrayLike], Array],
         solver_tol: float,
+        solver_backend: str,
     ):
         self.n = n
         self.m = m
@@ -122,6 +123,7 @@ class CLFCBF:
         self.H = H
         self.F = F
         self.solver_tol = solver_tol
+        self.solver_backend = solver_backend
 
     @classmethod
     def from_config(cls, config: CLFCBFConfig) -> "CLFCBF":
@@ -158,6 +160,7 @@ class CLFCBF:
             config.H,
             config.F,
             config.solver_tol,
+            config.solver_backend,
         )
         instance._validate_instance(*config.init_args, **config.init_kwargs)
         return instance
@@ -204,6 +207,7 @@ class CLFCBF:
                 h,
                 penalty=jnp.asarray(self.constraint_relaxation_penalties),
                 solver_tol=self.solver_tol,
+                backend=self.solver_backend,
             )
         else:
             x_qp, s_qp, z_qp, y_qp, converged, iters = qpax.solve_qp(
@@ -214,6 +218,7 @@ class CLFCBF:
                 G,
                 h,
                 solver_tol=self.solver_tol,
+                backend=self.solver_backend,
             )
         return x_qp[: self.m]
 
